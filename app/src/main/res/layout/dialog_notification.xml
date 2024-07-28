@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:id="@+id/main"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/dialog_imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="90dp"
+        android:maxHeight="90dp"
+        android:contentDescription="@string/app_name"
+        android:minWidth="60dp"
+        android:minHeight="60dp"
+        android:src="@drawable/ad_blocker_icon"
+        android:adjustViewBounds="true"
+        android:layout_margin="10dp"
+        android:scaleType="fitXY" />
+
+    <TextView
+        android:id="@+id/dialog_heading_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Upload complete"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText"
+        android:padding="10dp"/>
+
+    <TextView
+        android:id="@+id/dialog_message_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Congrats! Your upload successfully done"
+        android:ellipsize="end"
+        android:textAlignment="center"
+        tools:ignore="HardcodedText"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="20dp"/>
+
+    <Button
+        android:id="@+id/dialog_ok_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Okay"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="15dp"
+        android:textColor="@color/white"
+        tools:ignore="HardcodedText" />
+
+</LinearLayout>

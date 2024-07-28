@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/background_color"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText"
+    android:paddingHorizontal="10dp"
+    android:paddingBottom="10dp">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/telegram_join_img"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:contentDescription="TG" />
+
+    <CheckBox
+        android:id="@+id/doNotShowTGCheckBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Don't show again."
+        android:textColor="?attr/text_color"
+        android:checked="false"
+        android:layout_marginStart="10dp"
+        tools:ignore="VisualLintButtonSize" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <Button
+            android:id="@+id/cancelJoinTGBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="No thanks!"
+            android:textColor="?attr/text_color"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/joinTGBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="JOIN"
+            android:textColor="?attr/text_color"
+            tools:ignore="TextContrastCheck" />
+
+    </RelativeLayout>
+
+</LinearLayout>
