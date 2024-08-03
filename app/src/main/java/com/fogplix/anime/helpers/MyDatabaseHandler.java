@@ -16,6 +16,8 @@ import java.util.List;
 
 public class MyDatabaseHandler extends SQLiteOpenHelper {
 
+    private static final String TAG = "MADARA";
+
     public MyDatabaseHandler(Context context) {
         super(context, DatabaseParams.DB_NAME, null, DatabaseParams.DB_VERSION);
     }
@@ -48,7 +50,7 @@ public class MyDatabaseHandler extends SQLiteOpenHelper {
             onCreate(sqLiteDatabase);
         }
         catch (Exception e){
-            e.printStackTrace();
+            Log.e(TAG, "onUpgrade: ", e);
         }
     }
 
