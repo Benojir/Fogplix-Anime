@@ -52,15 +52,14 @@ public class SearchActivity extends AppCompatActivity {
 
             CustomMethods.hideKeyboard(this, textView);
 
-            if (actionId == EditorInfo.IME_ACTION_DONE && !binding.searchET.getText().toString().isEmpty()){
+            if (actionId == EditorInfo.IME_ACTION_DONE && !binding.searchET.getText().toString().isEmpty()) {
 
                 binding.noAnimeContainer.setVisibility(View.GONE);
                 binding.searchPageImage.setVisibility(View.GONE);
-
-
+                
                 keyword = binding.searchET.getText().toString().trim();
 
-                if (!keyword.equalsIgnoreCase(lastSearchedKeyword)){        //it means new keyword and reset everything
+                if (!keyword.equalsIgnoreCase(lastSearchedKeyword)) {        //it means new keyword and reset everything
 
                     firstTimeSearch = true;
                     alreadyReachedLastPage = false;
@@ -83,8 +82,7 @@ public class SearchActivity extends AppCompatActivity {
                 }
 
                 return true;
-            }
-            else{
+            } else {
                 Toast.makeText(this, "No text entered.", Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -100,7 +98,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
 
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                     isScrolling = true;
                 }
             }
@@ -112,7 +110,7 @@ public class SearchActivity extends AppCompatActivity {
                 totalItems = layoutManager.getItemCount();
                 scrollOutItems = layoutManager.findFirstVisibleItemPosition();
 
-                if (isScrolling && (currentItems + scrollOutItems == totalItems)){
+                if (isScrolling && (currentItems + scrollOutItems == totalItems)) {
 
                     isScrolling = false;
                     page = page + 1;
@@ -131,21 +129,20 @@ public class SearchActivity extends AppCompatActivity {
 
             try {
                 startActivityForResult(intent, RESULT_SPEECH_CODE);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 CustomMethods.errorAlert(this, "Error", e.getMessage(), "Ok", false);
             }
         });
     }
 //--------------------------------------------------------------------------------------------------
 
-    private void searchAnime(String keyword, int page){
+    private void searchAnime(String keyword, int page) {
 
         String searchPageLink = getString(R.string.gogoanime_url) + "/search.html?keyword=" + keyword + "&page=" + page;
 
-        if (!alreadyReachedLastPage){
+        if (!alreadyReachedLastPage) {
 
-            if (page > 1){
+            if (page > 1) {
                 binding.loaderProgressOnBottom.setVisibility(View.VISIBLE);
             }
 
@@ -159,14 +156,14 @@ public class SearchActivity extends AppCompatActivity {
 
                     try {
 
-                        if (resultAnime.length() <= 0){
+                        if (resultAnime.length() <= 0) {
                             alreadyReachedLastPage = true;
                         }
 
-                        if (resultAnime.length() <= 0 && firstTimeSearch){
+                        if (resultAnime.length() <= 0 && firstTimeSearch) {
                             binding.noAnimeContainer.setVisibility(View.VISIBLE);
 
-                        } else{
+                        } else {
 
                             firstTimeSearch = false;
 
@@ -179,7 +176,7 @@ public class SearchActivity extends AppCompatActivity {
                             rvAdapter.notifyItemRangeInserted(startPosition, itemCount);
                         }
 
-                    } catch (JSONException e){
+                    } catch (JSONException e) {
                         CustomMethods.errorAlert(SearchActivity.this, "Error (Json)", e.getMessage(), "OK", false);
                     }
                 }
@@ -187,7 +184,7 @@ public class SearchActivity extends AppCompatActivity {
                 @Override
                 public void onScrapeFailed(String error) {
                     alreadyReachedLastPage = true;
-                    if (firstTimeSearch){
+                    if (firstTimeSearch) {
                         binding.noAnimeContainer.setVisibility(View.VISIBLE);
                     }
                 }
@@ -205,15 +202,15 @@ public class SearchActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RESULT_SPEECH_CODE){
+        if (requestCode == RESULT_SPEECH_CODE) {
 
-            if(resultCode == RESULT_OK && data != null){
+            if (resultCode == RESULT_OK && data != null) {
 
                 ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
                 String oldTxt = binding.searchET.getText().toString();
 
-                if (!oldTxt.equals("")){
+                if (!oldTxt.equals("")) {
                     oldTxt += " ";
                 }
                 assert text != null;
