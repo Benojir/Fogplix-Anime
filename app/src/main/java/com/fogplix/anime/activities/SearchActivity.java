@@ -56,7 +56,7 @@ public class SearchActivity extends AppCompatActivity {
 
                 binding.noAnimeContainer.setVisibility(View.GONE);
                 binding.searchPageImage.setVisibility(View.GONE);
-                
+
                 keyword = binding.searchET.getText().toString().trim();
 
                 if (!keyword.equalsIgnoreCase(lastSearchedKeyword)) {        //it means new keyword and reset everything
