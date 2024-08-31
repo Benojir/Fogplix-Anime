@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/background_color"
-    tools:context=".activities.GenreViewActivity"
-    android:orientation="vertical">
+    android:background="?attr/backgroundColor"
+    android:orientation="vertical"
+    tools:context=".activities.GenreViewActivity">
 
     <include
         android:id="@+id/ownToolbar"
@@ -19,7 +19,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/loaderProgressBottom"/>
+            android:layout_above="@+id/loaderProgressBottom" />
 
         <ProgressBar
             android:id="@+id/loaderProgressCenter"
@@ -35,10 +35,9 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:visibility="gone"
-            android:indeterminateTint="@color/red"/>
+            android:indeterminateTint="@color/red"
+            android:visibility="gone" />
     </RelativeLayout>
-
 
 
 </LinearLayout>

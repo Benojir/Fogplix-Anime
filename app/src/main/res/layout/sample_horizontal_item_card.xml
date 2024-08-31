@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="110dp"
@@ -20,7 +19,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/background_color"
+        android:background="?attr/backgroundColor"
         android:foreground="?android:attr/selectableItemBackground">
 
         <ImageView
@@ -88,17 +87,17 @@
                 android:maxLines="2"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="10dp"
-                android:text="Anime "
-                android:textAlignment="center"
-                android:textColor="?attr/text_color"
-                android:textSize="15sp"
                 android:shadowColor="#000"
                 android:shadowDx="-2"
                 android:shadowDy="2"
-                android:shadowRadius="1"/>
+                android:shadowRadius="1"
+                android:text="Anime "
+                android:textAlignment="center"
+                android:textColor="?attr/textColor"
+                android:textSize="15sp" />
+
         </RelativeLayout>
 
     </RelativeLayout>
-
 
 </androidx.cardview.widget.CardView>

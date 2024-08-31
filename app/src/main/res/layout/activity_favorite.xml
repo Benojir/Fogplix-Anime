@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.FavoriteActivity"
-    android:background="?attr/background_color">
+    android:background="?attr/backgroundColor"
+    tools:context=".activities.FavoriteActivity">
 
     <include
         android:id="@+id/ownToolbar"
@@ -14,7 +14,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/ownToolbar"/>
+        android:layout_below="@+id/ownToolbar" />
 
     <LinearLayout
         android:id="@+id/noAnimeContainer"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:text="You haven't added any anime yet!"
             android:textAlignment="center"
-            android:textColor="?attr/text_color"
+            android:textColor="?attr/textColor"
             android:textSize="20sp"
             tools:ignore="HardcodedText" />
     </LinearLayout>

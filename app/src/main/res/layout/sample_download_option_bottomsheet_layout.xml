@@ -10,7 +10,7 @@
     app:cardCornerRadius="20dp"
     android:layout_marginBottom="5dp"
     android:layout_marginHorizontal="15dp"
-    app:cardBackgroundColor="?attr/background_color">
+    app:cardBackgroundColor="?attr/backgroundColor">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Web Browser"
-                    android:textColor="?attr/text_color"
+                    android:textColor="?attr/textColor"
                     android:textSize="17sp"
                     android:layout_marginStart="10dp"
                     android:textAllCaps="false"
@@ -88,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Via 1DM"
-                    android:textColor="?attr/text_color"
+                    android:textColor="?attr/textColor"
                     android:textSize="17sp"
                     android:layout_marginStart="10dp"
                     android:textAllCaps="false"

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ownToolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:layout_alignParentTop="true"
-    android:id="@+id/ownToolbar"
     tools:ignore="HardcodedText">
 
     <ImageButton
@@ -13,22 +12,22 @@
         style="@style/ExoStyledControls.Button.Bottom.RepeatToggle"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:contentDescription="Navigate"
         android:layout_marginStart="10dp"
+        android:contentDescription="Navigate"
         android:src="@drawable/arrow_back_48" />
 
     <TextView
         android:id="@+id/ownToolbarTV"
+        style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toEndOf="@+id/navbarLeftBtn"
-        android:text="Favorite"
-        android:gravity="center_vertical"
-        style="@style/TextAppearance.AppCompat.Title"
-        android:textColor="?attr/text_color"
-        android:layout_toStartOf="@+id/navbarRightBtn"
         android:layout_marginStart="10dp"
-        android:visibility="gone"/>
+        android:layout_toStartOf="@+id/navbarRightBtn"
+        android:layout_toEndOf="@+id/navbarLeftBtn"
+        android:gravity="center_vertical"
+        android:text="Favorite"
+        android:textColor="?attr/textColor"
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/imageViewMiddle"
@@ -46,8 +45,8 @@
         style="@style/ExoStyledControls.Button.Bottom.RepeatToggle"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:contentDescription="Mic"
         android:layout_marginEnd="10dp"
-        android:src="@drawable/search_24"/>
+        android:contentDescription="Mic"
+        android:src="@drawable/search_24" />
 
 </RelativeLayout>
