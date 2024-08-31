@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -74,6 +75,7 @@ import java.util.UUID;
 @UnstableApi
 public class PlayerActivity extends AppCompatActivity {
 
+    private static final String TAG = "MADARA";
     private ProgressBar bufferingProgressBar;
     private PlayerView exoPlayerView;
     private String refererUrl = "";
@@ -638,7 +640,7 @@ public class PlayerActivity extends AppCompatActivity {
                     Settings.System.SCREEN_BRIGHTNESS
             );
         } catch (Settings.SettingNotFoundException e) {
-            e.printStackTrace();
+            Log.e(TAG, "getCurrentScreenBrightness: ", e);
         }
 
         // Get the maximum brightness value supported by the device's screen
