@@ -75,7 +75,11 @@
 
             <ImageButton
                 android:id="@+id/backBtn"
-                style="@style/ExoStyledControls.Button.Bottom.RepeatToggle"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="12dp"
+                android:scaleType="centerInside"
+                android:background="@drawable/round_transparent_ripple_button"
                 android:layout_alignParentStart="true"
                 android:layout_margin="15dp"
                 android:contentDescription="Back"
@@ -83,7 +87,11 @@
 
             <ImageButton
                 android:id="@+id/searchBtn"
-                style="@style/ExoStyledControls.Button.Bottom.RepeatToggle"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="12dp"
+                android:scaleType="centerInside"
+                android:background="@drawable/round_transparent_ripple_button"
                 android:layout_alignParentEnd="true"
                 android:layout_margin="15dp"
                 android:contentDescription="Search"
