@@ -10,13 +10,8 @@
     <string name="popular">Popular</string>
     <string name="synopsis">Synopsis</string>
 
-    <string name="trending">Trending Now</string>
-    <string name="popular_this_winter">Popular this Winter</string>
-    <string name="popular_this_spring">Popular this Spring</string>
-    <string name="popular_this_summer">Popular this Summer</string>
-
-    <string name="VIDCDN_API_URL">https://browser.foganime.com/gogoanime-api-php/generate-link.php?id=</string>
-    <string name="proxy_browser_link">https://browser.foganime.com/browse.php?link=</string>
+    <string name="VIDCDN_API_URL">https://api.fogplix-anime.com/generate-link.php?id=</string>
+    <string name="proxy_browser_link">https://proxy.fogplix-anime.com/browse.php?link=</string>
 
     <string name="user_agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36</string>
     <string name="app_sharing_message">Watch free anime (Dubbed and Subbed) with Fogplix Anime app. Download now from </string>
@@ -24,14 +19,14 @@
     <string name="compose_shortcut_label_for_favorites">Favorites</string>
     <string name="compose_shortcut_label_for_search">Search</string>
 
-    <string name="version_page_link">https://venomdino.github.io/FogPlix-Landing-Page/updates/version.json</string>
-    <string name="new_notice_json_link">https://venomdino.github.io/FogPlix-Landing-Page/updates/fogplix-alert.json</string>
-    <string name="playable_servers_status_json_link">https://venomdino.github.io/FogPlix-Landing-Page/updates/playable-servers-status.json</string>
+    <string name="version_page_link">https://benojir.github.io/Fogplix-Landing-Page/updates/version.json</string>
+    <string name="new_notice_json_link">https://benojir.github.io/Fogplix-Landing-Page/updates/fogplix-alert.json</string>
+    <string name="playable_servers_status_json_link">https://benojir.github.io/Fogplix-Landing-Page/updates/playable-servers-status.json</string>
 
-    <string name="official_website">https://venomdino.github.io/FogPlix-Landing-Page</string>
-    <string name="official_telegram_channel">https://telegram.me/FogPlix</string>
-    <string name="official_telegram_group">https://telegram.me/FogPlixGroup</string>
-    <string name="more_apps">https://venomdino.github.io/FogPlix-Landing-Page/more-apps.html</string>
+    <string name="official_website">https://benojir.github.io/Fogplix-Landing-Page/</string>
+    <string name="official_telegram_channel">https://telegram.me/Fogplix</string>
+    <string name="official_telegram_group">https://telegram.me/FogplixGroup</string>
+    <string name="more_apps">https://benojir.github.io/Fogplix-Landing-Page/more-apps.html</string>
 
     <string name="gogoload_recent">https://ajax.gogocdn.net/ajax/page-recent-release.html</string>
     <string name="gogoload_list_episodes">https://ajax.gogocdn.net/ajax/load-list-episode</string>
@@ -49,13 +44,5 @@
     <string name="attachment_title">Proxy</string>
     <string name="attachment_summary_on">Now you are able to browse Fogplix Anime through proxy</string>
     <string name="attachment_summary_off">Use proxy to bypass your ISP (Internet Service Provider) blockage</string>
-
-<!--    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>-->
-<!--    <string name="admob_rewarded_interstitial">ca-app-pub-3940256099942544/5354046379</string>-->
-
-    <!-- Uporer ta test ads -->
-
-    <string name="admob_app_id">ca-app-pub-5267566580759435~2488718221</string>
-    <string name="admob_rewarded_interstitial">ca-app-pub-5267566580759435/3941502326</string>
 
 </resources>

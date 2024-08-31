@@ -238,7 +238,7 @@ public class Scraper {
                             .execute();
 
                 } catch (Exception ex) {
-                    Log.d("Uchiha", "onCreate ex: " + ex.getMessage());
+                    Log.e("MADARA", "scrapeDetails: ", ex);
                     response = null;
                 }
             }
