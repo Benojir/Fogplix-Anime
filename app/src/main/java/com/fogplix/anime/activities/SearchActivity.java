@@ -1,13 +1,13 @@
 package com.fogplix.anime.activities;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.RecognizerIntent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,8 +39,9 @@ public class SearchActivity extends AppCompatActivity {
     private boolean isScrolling = false;
     private boolean alreadyReachedLastPage = false;
     private static final int RESULT_SPEECH_CODE = 541;
-    private String lastSearchedKeyword = "";
     private boolean firstTimeSearch = true;
+    private final Handler handler = new Handler();
+    private Runnable searchRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,49 +49,39 @@ public class SearchActivity extends AppCompatActivity {
         binding = ActivitySearchBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.searchET.setOnEditorActionListener((textView, actionId, keyEvent) -> {
+        binding.searchET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            CustomMethods.hideKeyboard(this, textView);
+            }
 
-            if (actionId == EditorInfo.IME_ACTION_DONE && !binding.searchET.getText().toString().isEmpty()) {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                binding.noAnimeContainer.setVisibility(View.GONE);
-                binding.searchPageImage.setVisibility(View.GONE);
+            }
 
-                keyword = binding.searchET.getText().toString().trim();
-
-                if (!keyword.equalsIgnoreCase(lastSearchedKeyword)) {        //it means new keyword and reset everything
-
-                    firstTimeSearch = true;
-                    alreadyReachedLastPage = false;
-
-                    binding.loaderProgressInCenter.setVisibility(View.VISIBLE);
-                    binding.recyclerView.setVisibility(View.INVISIBLE);
-
-                    lastSearchedKeyword = keyword;
-
-                    page = 1;
-
-                    allAnime = new JSONArray();
-
-                    rvAdapter = new VerticalItemsListAdapter(SearchActivity.this, allAnime, false);
-                    binding.recyclerView.setAdapter(rvAdapter);
-                    layoutManager = new GridLayoutManager(SearchActivity.this, 3);
-                    binding.recyclerView.setLayoutManager(layoutManager);
-
-                    searchAnime(keyword, page);
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Remove any pending search runnable
+                if (searchRunnable != null) {
+                    handler.removeCallbacks(searchRunnable);
                 }
 
-                return true;
-            } else {
-                Toast.makeText(this, "No text entered.", Toast.LENGTH_SHORT).show();
-                return false;
+                keyword = s.toString().trim();
+
+                if (keyword.isEmpty() || keyword.length() < 2) {
+                    return;
+                }
+
+                // Create a new Runnable to execute the search method
+                searchRunnable = () -> resetEverythingAndPerformFirstSearch(keyword);
+
+                // Post the Runnable with a delay
+                handler.postDelayed(searchRunnable, 1500);
             }
         });
 
         binding.backBtn.setOnClickListener(view -> onBackPressed());
-
-        CustomMethods.showKeyBoard(this, binding.searchET);
 
         //..........................................................................................
 
@@ -134,6 +125,25 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
     }
+
+//--------------------------------------------------------------------------------------------------
+
+    private void resetEverythingAndPerformFirstSearch(String query) {
+        binding.noAnimeContainer.setVisibility(View.GONE);
+        binding.searchPageImage.setVisibility(View.GONE);
+        binding.recyclerView.setVisibility(View.GONE);
+        binding.loaderProgressInCenter.setVisibility(View.VISIBLE);
+        allAnime = new JSONArray();
+        firstTimeSearch = true;
+        alreadyReachedLastPage = false;
+        rvAdapter = new VerticalItemsListAdapter(SearchActivity.this, allAnime, false);
+        binding.recyclerView.setAdapter(rvAdapter);
+        layoutManager = new GridLayoutManager(SearchActivity.this, 3);
+        binding.recyclerView.setLayoutManager(layoutManager);
+        page = 1;
+        searchAnime(query, page);
+    }
+
 //--------------------------------------------------------------------------------------------------
 
     private void searchAnime(String keyword, int page) {
@@ -162,9 +172,7 @@ public class SearchActivity extends AppCompatActivity {
 
                         if (resultAnime.length() <= 0 && firstTimeSearch) {
                             binding.noAnimeContainer.setVisibility(View.VISIBLE);
-
                         } else {
-
                             firstTimeSearch = false;
 
                             int startPosition = rvAdapter.getItemCount(); // Get the current item count
@@ -194,10 +202,8 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-
 //--------------------------------------------------------------------------------------------------
 
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -213,9 +219,12 @@ public class SearchActivity extends AppCompatActivity {
                 if (!oldTxt.equals("")) {
                     oldTxt += " ";
                 }
-                assert text != null;
-                binding.searchET.setText(oldTxt + text.get(0));
-                binding.searchET.setSelection(binding.searchET.getText().length());
+
+                if (text != null) {
+                    keyword = oldTxt + text.get(0);
+                    binding.searchET.setText(keyword);
+                    resetEverythingAndPerformFirstSearch(keyword);
+                }
             }
         }
     }
