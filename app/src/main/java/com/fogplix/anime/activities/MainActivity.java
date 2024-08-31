@@ -3,6 +3,7 @@ package com.fogplix.anime.activities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.net.Uri;
@@ -26,6 +27,7 @@ import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.fogplix.anime.BuildConfig;
@@ -87,9 +89,15 @@ public class MainActivity extends AppCompatActivity {
         CustomMethods.checkNewNotice(this, importantNoticeTV);
         CustomMethods.checkPlayableServersStatus(this);
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         AdBlockerDetector.detectAdBlocker(isAdBlockerDetected -> {
-            if (isAdBlockerDetected){
-                Toast.makeText(this, "Ad blocker detected! Don't worry, it's ads free.", Toast.LENGTH_LONG).show();
+            if (isAdBlockerDetected) {
+                if (preferences.getBoolean("use_proxy", false)) {
+                    CustomMethods.warningAlert(MainActivity.this, "Warning", getString(R.string.adblock_detected), "Ignore", false);
+                } else {
+                    Toast.makeText(this, "Ad-blocker detected! Don't worry, it's ads free.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

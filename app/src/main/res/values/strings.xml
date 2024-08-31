@@ -34,6 +34,7 @@
 
     <string name="isp_blocked">Oops! Maybe your ISP has blocked our server. Please try using any VPN or enable proxy from settings page. May be it can help.
         Please take a screenshot and report this error to us.</string>
+    <string name="adblock_detected">As you\'re using an ad-blocker, it might block our proxy server and cause issues. To fix this, either turn off the proxy in settings or disable the ad-blocker.</string>
 
     <string name="feedback_email">hiddenpirates@outlook.com</string>
     <string name="episode_playing_failed_message">Failed to play this episode. Please take a screenshot and report it to us. Now try to play on the web player. Just click on the below button \n</string>

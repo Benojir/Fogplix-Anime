@@ -101,12 +101,11 @@ public class CustomMethods {
 
     //--------------------------------------------------------------------------------------------------
     public static void errorAlert(Activity activity, String errorTitle, String errorBody, String actionButton, boolean shouldGoBack) {
-
         if (!activity.isFinishing()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             builder.setTitle(errorTitle);
             builder.setMessage(errorBody);
-            builder.setIcon(R.drawable.warning);
+            builder.setIcon(R.drawable.error_outline_24);
             builder.setPositiveButton(actionButton, (dialogInterface, i) -> {
                 if (shouldGoBack) {
                     activity.finish();
@@ -117,6 +116,24 @@ public class CustomMethods {
             builder.setNegativeButton("Report", (dialog, which) -> {
                 activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + activity.getString(R.string.feedback_email) + "?subject= Fogplix Anime Error v" + BuildConfig.VERSION_NAME + "&body=" + errorBody)));
                 activity.finish();
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+    }
+
+    public static void warningAlert(Activity activity, String warningTitle, String warningBody, String actionButton, boolean shouldGoBack) {
+        if (!activity.isFinishing()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setTitle(warningTitle);
+            builder.setMessage(warningBody);
+            builder.setIcon(R.drawable.warning);
+            builder.setPositiveButton(actionButton, (dialogInterface, i) -> {
+                if (shouldGoBack) {
+                    activity.finish();
+                } else {
+                    dialogInterface.dismiss();
+                }
             });
             AlertDialog dialog = builder.create();
             dialog.show();
