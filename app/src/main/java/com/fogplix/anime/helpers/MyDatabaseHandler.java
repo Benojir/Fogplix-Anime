@@ -37,7 +37,7 @@ public class MyDatabaseHandler extends SQLiteOpenHelper {
 
         String CREATE_LAST_WATCHED_EP_TABLE =
                 "CREATE TABLE " + DatabaseParams.LAST_WATCHED_EPISODES_TABLE +
-                "(" + DatabaseParams.KEY_ANIME_ID + " TEXT," + DatabaseParams.KEY_LAST_EPISODE_ID + " TEXT" + ")";
+                        "(" + DatabaseParams.KEY_ANIME_ID + " TEXT," + DatabaseParams.KEY_LAST_EPISODE_ID + " TEXT" + ")";
 
         sqLiteDatabase.execSQL(CREATE_LAST_WATCHED_EP_TABLE);
     }
@@ -48,21 +48,20 @@ public class MyDatabaseHandler extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DatabaseParams.FAVORITE_ANIME_TABLE);
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DatabaseParams.LAST_WATCHED_EPISODES_TABLE);
             onCreate(sqLiteDatabase);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Log.e(TAG, "onUpgrade: ", e);
         }
     }
 
 //--------------------------------------------------------------------------------------------------
 
-    public String getLastWatchedEpisodeId(String animeId){
+    public String getLastWatchedEpisodeId(String animeId) {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "SELECT * FROM " + DatabaseParams.LAST_WATCHED_EPISODES_TABLE + " WHERE " + DatabaseParams.KEY_ANIME_ID + " = ?";
 
-        Cursor cursor = db.rawQuery(query, new String[] { animeId });
+        Cursor cursor = db.rawQuery(query, new String[]{animeId});
 
         String episodeId = "";
 
@@ -73,14 +72,13 @@ public class MyDatabaseHandler extends SQLiteOpenHelper {
         return episodeId;
     }
 
-    public void addLastWatchedEpisode(LastEpisodeWatchedModel lastEpisodeWatchedModel){
+    public void addLastWatchedEpisode(LastEpisodeWatchedModel lastEpisodeWatchedModel) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        if (checkIfLastWatchedAnimeAddedOrNot(lastEpisodeWatchedModel)){
+        if (checkIfLastWatchedAnimeAddedOrNot(lastEpisodeWatchedModel)) {
             updateLastWatchedEpisode(lastEpisodeWatchedModel);
-        }
-        else{
+        } else {
 
             ContentValues values = new ContentValues();
 
@@ -92,7 +90,7 @@ public class MyDatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    public void updateLastWatchedEpisode(LastEpisodeWatchedModel lastEpisodeWatchedModel){
+    public void updateLastWatchedEpisode(LastEpisodeWatchedModel lastEpisodeWatchedModel) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -102,31 +100,30 @@ public class MyDatabaseHandler extends SQLiteOpenHelper {
         String query = "UPDATE " + DatabaseParams.LAST_WATCHED_EPISODES_TABLE + " SET "
                 + DatabaseParams.KEY_LAST_EPISODE_ID + " = ? WHERE " + DatabaseParams.KEY_ANIME_ID + " = ?";
 
-        db.execSQL(query, new String[] {episodeId, animeId});
+        db.execSQL(query, new String[]{episodeId, animeId});
     }
 
-    public boolean checkIfLastWatchedAnimeAddedOrNot(LastEpisodeWatchedModel lastEpisodeWatchedModel){
+    public boolean checkIfLastWatchedAnimeAddedOrNot(LastEpisodeWatchedModel lastEpisodeWatchedModel) {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
         String animeId = lastEpisodeWatchedModel.getAnimeId();
 
-        Cursor cursor = db.query(DatabaseParams.LAST_WATCHED_EPISODES_TABLE, new String[] {DatabaseParams.KEY_ANIME_ID,
+        Cursor cursor = db.query(DatabaseParams.LAST_WATCHED_EPISODES_TABLE, new String[]{DatabaseParams.KEY_ANIME_ID,
                         DatabaseParams.KEY_LAST_EPISODE_ID}, DatabaseParams.KEY_ANIME_ID + "=?",
-                new String[] { animeId }, null, null, null, null);
+                new String[]{animeId}, null, null, null, null);
 
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             cursor.close();
             return true;
-        }
-        else {
+        } else {
             cursor.close();
             return false;
         }
     }
 //--------------------------------------------------------------------------------------------------
 
-    public void addAnimeToFavorite(AnimeFavoriteListModel favoriteListModel){
+    public void addAnimeToFavorite(AnimeFavoriteListModel favoriteListModel) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -143,17 +140,17 @@ public class MyDatabaseHandler extends SQLiteOpenHelper {
 
 //--------------------------------------------------------------------------------------------------
 
-    public AnimeFavoriteListModel getAnimeFromFavorite(String animeId){
+    public AnimeFavoriteListModel getAnimeFromFavorite(String animeId) {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(DatabaseParams.FAVORITE_ANIME_TABLE, new String[] {DatabaseParams.KEY_ANIME_ID,
+        Cursor cursor = db.query(DatabaseParams.FAVORITE_ANIME_TABLE, new String[]{DatabaseParams.KEY_ANIME_ID,
                         DatabaseParams.KEY_ANIME_NAME, DatabaseParams.KEY_ANIME_IMAGE_URL, DatabaseParams.KEY_ANIME_SERVER}, DatabaseParams.KEY_ANIME_ID + "=?",
-                new String[] { animeId }, null, null, null, null);
+                new String[]{animeId}, null, null, null, null);
 
         AnimeFavoriteListModel favoriteListModel = new AnimeFavoriteListModel();
 
-        if (cursor != null && cursor.moveToFirst()){
+        if (cursor != null && cursor.moveToFirst()) {
 
             cursor.moveToFirst();
 
@@ -169,7 +166,7 @@ public class MyDatabaseHandler extends SQLiteOpenHelper {
 
 //--------------------------------------------------------------------------------------------------
 
-    public boolean deleteAnimeFromFavorite(String animeId){
+    public boolean deleteAnimeFromFavorite(String animeId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -177,13 +174,13 @@ public class MyDatabaseHandler extends SQLiteOpenHelper {
     }
 //--------------------------------------------------------------------------------------------------
 
-    public void deleteAllAnimeFromFavorite(){
+    public void deleteAllAnimeFromFavorite() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + DatabaseParams.FAVORITE_ANIME_TABLE);
     }
 //--------------------------------------------------------------------------------------------------
 
-    public List<AnimeFavoriteListModel> getAllFavoriteAnime(){
+    public void getAllFavoriteAnime(OnRetrievedAllAnimeListener listener) {
 
         List<AnimeFavoriteListModel> favoriteListModelList = new ArrayList<>();
 
@@ -192,7 +189,7 @@ public class MyDatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 AnimeFavoriteListModel favoriteAnimeModel = new AnimeFavoriteListModel(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
                 favoriteListModelList.add(favoriteAnimeModel);
@@ -201,6 +198,13 @@ public class MyDatabaseHandler extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        return favoriteListModelList;
+
+        listener.onComplete(favoriteListModelList);
+    }
+
+//    ----------------------------------------------------------------------------------------------
+
+    public interface OnRetrievedAllAnimeListener {
+        void onComplete(List<AnimeFavoriteListModel> allFavoriteAnime);
     }
 }

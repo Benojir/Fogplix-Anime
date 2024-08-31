@@ -11,9 +11,6 @@ import com.fogplix.anime.adapters.FavoriteAnimeAdapter;
 import com.fogplix.anime.databinding.ActivityFavoriteBinding;
 import com.fogplix.anime.databinding.OwnToolbarBinding;
 import com.fogplix.anime.helpers.MyDatabaseHandler;
-import com.fogplix.anime.model.AnimeFavoriteListModel;
-
-import java.util.List;
 
 public class FavoriteActivity extends AppCompatActivity {
 
@@ -31,24 +28,23 @@ public class FavoriteActivity extends AppCompatActivity {
         ownToolbarBinding.ownToolbarTV.setVisibility(View.VISIBLE);
         ownToolbarBinding.navbarLeftBtn.setOnClickListener(v -> onBackPressed());
 
-
         MyDatabaseHandler handler = new MyDatabaseHandler(this);
 
-        List<AnimeFavoriteListModel> favoriteLists = handler.getAllFavoriteAnime();
+        handler.getAllFavoriteAnime(favoriteLists -> {
 
-        if (favoriteLists.size() > 0){
+            if (favoriteLists.size() > 0) {
+                FavoriteAnimeAdapter adapter = new FavoriteAnimeAdapter(this, favoriteLists);
+                binding.recyclerView.setAdapter(adapter);
 
-            FavoriteAnimeAdapter adapter = new FavoriteAnimeAdapter(this, favoriteLists);
-            binding.recyclerView.setAdapter(adapter);
+                GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
+                binding.recyclerView.setLayoutManager(layoutManager);
 
-            GridLayoutManager layoutManager = new GridLayoutManager(this,3);
-            binding.recyclerView.setLayoutManager(layoutManager);
+                ownToolbarBinding.ownToolbarTV.setText("Favorites (" + favoriteLists.size() + ")");
 
-            ownToolbarBinding.ownToolbarTV.setText("Favorites (" + favoriteLists.size() + ")");
-        }
-        else{
-            binding.recyclerView.setVisibility(View.GONE);
-            binding.noAnimeContainer.setVisibility(View.VISIBLE);
-        }
+            } else {
+                binding.recyclerView.setVisibility(View.GONE);
+                binding.noAnimeContainer.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }
