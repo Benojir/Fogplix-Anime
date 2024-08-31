@@ -16,6 +16,7 @@
     <color name="fade_white">#E0DEDE</color>
     <color name="light_red">#EF3977</color>
     <color name="dark_yellow">#FFC107</color>
+    <color name="dark_grey">#181818</color>
 
     <color name="hp_theme_color">#000000</color>
     <color name="background_color">#000000</color>

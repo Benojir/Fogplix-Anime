@@ -2,7 +2,6 @@ package com.fogplix.anime.helpers;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,15 +12,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
 
 import com.fogplix.anime.BuildConfig;
 import com.fogplix.anime.R;
+import com.fogplix.anime.dialogs.MyProgressDialog;
 import com.fogplix.anime.params.Statics;
 
 import org.json.JSONArray;
@@ -118,28 +115,12 @@ public class CustomMethods {
                 }
             });
             builder.setNegativeButton("Report", (dialog, which) -> {
-                activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + activity.getString(R.string.feedback_email) + "?subject= FogPlix Error v" + BuildConfig.VERSION_NAME + "&body=" + errorBody)));
+                activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + activity.getString(R.string.feedback_email) + "?subject= Fogplix Anime Error v" + BuildConfig.VERSION_NAME + "&body=" + errorBody)));
                 activity.finish();
             });
             AlertDialog dialog = builder.create();
             dialog.show();
         }
-    }
-//--------------------------------------------------------------------------------------------------
-
-    public static void showKeyBoard(Activity activity, EditText editText) {
-        if (editText.requestFocus()) {
-            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
-            }
-            activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        }
-    }
-
-    public static void hideKeyboard(Context context, View view) {
-        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 //--------------------------------------------------------------------------------------------------
@@ -283,7 +264,7 @@ public class CustomMethods {
 
                                     String downloadPath = Objects.requireNonNull(activity.getExternalFilesDir(null)) + "/fogplix_v" + versionName + "_t" + getDateTime() + ".apk";
 
-                                    ProgressDialog pd = new ProgressDialog(activity);
+                                    MyProgressDialog pd = new MyProgressDialog(activity);
                                     pd.setCancelable(false);
                                     pd.setMessage("Don't close the app. \nDownloading 0%");
                                     pd.show();

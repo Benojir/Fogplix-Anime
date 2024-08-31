@@ -3,7 +3,6 @@ package com.fogplix.anime.dialogs;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
@@ -75,14 +74,14 @@ public class EpisodeDialogBuilder {
 
             HPSharedPreference hpSharedPreference = new HPSharedPreference(activity);
 
-            boolean server_status = hpSharedPreference.getPlayableServersStatus("server_1");
+            boolean serverStatus = hpSharedPreference.getPlayableServersStatus("server_1");
 
-            if (server_status) {
+            if (serverStatus) {
 
-                ProgressDialog pd = new ProgressDialog(activity);
-                pd.setMessage("Generating playable link...");
-                pd.setCancelable(false);
-                pd.show();
+                MyProgressDialog mpd = new MyProgressDialog(activity);
+                mpd.setMessage("Generating playable link...");
+                mpd.setCancelable(false);
+                mpd.show();
 
                 GenerateDirectLink generateDirectLink = new GenerateDirectLink(activity);
 
@@ -90,7 +89,7 @@ public class EpisodeDialogBuilder {
                     @Override
                     public void onComplete(JSONObject object) {
 
-                        pd.dismiss();
+                        mpd.dismiss();
                         dialog.dismiss();
 
                         try {
@@ -108,7 +107,7 @@ public class EpisodeDialogBuilder {
 
                     @Override
                     public void onFailed(String error) {
-                        pd.dismiss();
+                        mpd.dismiss();
                         dialog.dismiss();
                         Toast.makeText(activity, error, Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "onFailed: ");
@@ -126,13 +125,13 @@ public class EpisodeDialogBuilder {
 
             HPSharedPreference hpSharedPreference = new HPSharedPreference(activity);
 
-            boolean server_status = hpSharedPreference.getPlayableServersStatus("server_2");
+            boolean serverStatus = hpSharedPreference.getPlayableServersStatus("server_2");
 
-            if (server_status) {
+            if (serverStatus) {
 
                 String vidcdn_api = activity.getString(R.string.VIDCDN_API_URL) + episodeId;
 
-                ProgressDialog pd = new ProgressDialog(activity);
+                MyProgressDialog pd = new MyProgressDialog(activity);
                 pd.setMessage("Generating playable link...");
                 pd.setCancelable(false);
                 pd.show();
@@ -191,7 +190,7 @@ public class EpisodeDialogBuilder {
 
     public void choosePlayOrDownload(String animeId, String animeTitle, String episodeId, String refererUrl, String videoHLSUrl, String videoHLSUrl2) {
 
-        final Dialog dialog = new Dialog(activity);
+        Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.dialog_play_or_download);
