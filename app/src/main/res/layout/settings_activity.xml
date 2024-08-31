@@ -1,36 +1,36 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="?attr/background_color"
+    android:background="?attr/backgroundColor"
     tools:ignore="HardcodedText">
 
     <RelativeLayout
+        android:id="@+id/ownToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentTop="true"
-        android:id="@+id/ownToolbar">
+        android:layout_alignParentTop="true">
 
         <ImageButton
             android:id="@+id/backButton"
             style="@style/ExoStyledControls.Button.Bottom.RepeatToggle"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:contentDescription="Navigate"
             android:layout_marginStart="10dp"
+            android:contentDescription="Navigate"
             android:src="@drawable/arrow_back_48" />
 
         <TextView
             android:id="@+id/ownToolbarTV"
+            style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toEndOf="@+id/backButton"
-            android:text="Settings"
-            android:gravity="center_vertical"
-            style="@style/TextAppearance.AppCompat.Title"
-            android:textColor="?attr/text_color"
             android:layout_marginStart="10dp"
-            android:visibility="visible"/>
+            android:layout_toEndOf="@+id/backButton"
+            android:gravity="center_vertical"
+            android:text="Settings"
+            android:textColor="?attr/textColor"
+            android:visibility="visible" />
 
     </RelativeLayout>
 
@@ -38,5 +38,6 @@
         android:id="@+id/settings"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/ownToolbar"/>
+        android:layout_below="@id/ownToolbar" />
+
 </RelativeLayout>

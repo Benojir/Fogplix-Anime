@@ -34,34 +34,34 @@
 
     <Button
         android:id="@+id/doubleTapSkipBackIcon"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="120dp"
+        android:clickable="false"
         android:drawableLeft="@drawable/fast_rewind"
         android:text="10"
         android:textColor="@color/white"
         android:textSize="22sp"
-        android:clickable="false"
-        tools:ignore="RtlHardcoded"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="120dp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:ignore="RtlHardcoded" />
 
     <Button
         android:id="@+id/doubleTapSkipForwardIcon"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="120dp"
+        android:clickable="false"
         android:drawableRight="@drawable/fast_forward"
         android:text="10"
         android:textColor="@color/white"
         android:textSize="22sp"
-        android:clickable="false"
-        tools:ignore="RtlHardcoded"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="120dp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:ignore="RtlHardcoded" />
 
 
     <LinearLayout
@@ -97,7 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:text="100"
-            android:textColor="?attr/text_color"
+            android:textColor="?attr/textColor"
             android:textSize="22sp"
             android:textStyle="bold" />
     </LinearLayout>
