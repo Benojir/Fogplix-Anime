@@ -1,6 +1,5 @@
 package com.fogplix.anime.helpers;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -236,7 +235,6 @@ public class CustomMethods {
     }
 //--------------------------------------------------------------------------------------------------
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     public static void checkForUpdateOnStartApp(Activity activity) {
 
         int currentVersionCode = BuildConfig.VERSION_CODE;
