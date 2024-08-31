@@ -107,8 +107,6 @@ public class MainActivity extends AppCompatActivity {
 
         ((TextView) headView.findViewById(R.id.header_layout_version_tv)).setText("Version: " + BuildConfig.VERSION_NAME);
 
-        headView.findViewById(R.id.closeDrawerBtn).setOnClickListener(v -> drawerLayout.closeDrawers());
-
         navigationViewItemClickedActions(navigationView);
 
         ////////////////////////////////////////////////////////////////////////////////////////////

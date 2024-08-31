@@ -35,7 +35,6 @@ public class Scraper {
     private final boolean isProxyEnabled;
     private final String proxyBrowserLink;
 
-
     public Scraper(Activity activity, RecentScraperCallback recentScraperCallback) {
         this.activity = activity;
         this.recentScraperCallback = recentScraperCallback;
