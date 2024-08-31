@@ -538,7 +538,7 @@ public class PlayerActivity extends AppCompatActivity {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle("Select video quality:");
         builder.setSingleChoiceItems(charSequences, selectedQualityIndex, (dialogInterface, which) -> selectedQualityIndex = which);
-        builder.setPositiveButton("Ok", (dialogInterface, i) -> {
+        builder.setPositiveButton("OK", (dialogInterface, i) -> {
 
             if (selectedQualityIndex == 0) {
                 Toast.makeText(context, context.getText(R.string.app_name) + " will choose video resolution automatically.", Toast.LENGTH_SHORT).show();

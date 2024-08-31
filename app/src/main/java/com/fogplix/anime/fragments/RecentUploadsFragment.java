@@ -2,6 +2,7 @@ package com.fogplix.anime.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.fogplix.anime.helpers.Scraper;
 import org.json.JSONArray;
 
 public class RecentUploadsFragment extends Fragment {
+    private static final String TAG = "MADARA";
     private FragmentRecentUploadsBinding binding;
     private Activity activity;
     private GridLayoutManager layoutManager;
@@ -129,7 +131,7 @@ public class RecentUploadsFragment extends Fragment {
                         rvAdapter.notifyItemRangeInserted(startPosition, itemCount);
 
                     } catch (Exception e){
-                        e.printStackTrace();
+                        Log.e(TAG, "onScrapeComplete: ", e);
                         CustomMethods.errorAlert(activity, "Json Error", e.getMessage(), "OK", true);
                     }
                 }

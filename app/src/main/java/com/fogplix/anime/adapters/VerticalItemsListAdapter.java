@@ -101,7 +101,7 @@ public class VerticalItemsListAdapter extends RecyclerView.Adapter<VerticalItems
         } catch (Exception e) {
             Log.e(TAG, "onBindViewHolder: ", e);
             Toast.makeText(activity, "JSON Error", Toast.LENGTH_SHORT).show();
-            CustomMethods.errorAlert(activity, "Error", e.getMessage(), "Ok", true);
+            CustomMethods.errorAlert(activity, "Error", e.getMessage(), "OK", true);
         }
 
         String finalServer = "gogo";

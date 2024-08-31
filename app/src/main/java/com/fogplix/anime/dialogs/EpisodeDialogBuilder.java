@@ -145,7 +145,7 @@ public class EpisodeDialogBuilder {
 
                         if (object.has("error")) {
                             pd.dismiss();
-                            CustomMethods.errorAlert(activity, "Error", object.getString("error"), "Ok", true);
+                            CustomMethods.errorAlert(activity, "Error", object.getString("error"), "OK", true);
                         } else {
 
                             String refererUrl = object.getString("linkiframe");
@@ -160,11 +160,11 @@ public class EpisodeDialogBuilder {
                     } catch (Exception e) {
                         Log.e(TAG, "choosePlayServer: ", e);
                         Toast.makeText(activity, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                        CustomMethods.errorAlert(activity, "Error (Try another server)", e.getMessage() + "\n", "Ok", true);
+                        CustomMethods.errorAlert(activity, "Error (Try another server)", e.getMessage() + "\n", "OK", true);
                     }
                 }, error -> {
                     pd.dismiss();
-                    CustomMethods.errorAlert(activity, "Error (Try another server.)", error.getMessage(), "Ok", true);
+                    CustomMethods.errorAlert(activity, "Error (Try another server.)", error.getMessage(), "OK", true);
                 });
 
                 Cache cache = new DiskBasedCache(activity.getCacheDir(), 1024 * 1024); // 1MB cap
@@ -278,7 +278,7 @@ public class EpisodeDialogBuilder {
 
                         } catch (Exception e) {
                             Log.e(TAG, "choosePlayOrDownload: ", e);
-                            CustomMethods.errorAlert(activity, "Error", e.getMessage(), "Ok", false);
+                            CustomMethods.errorAlert(activity, "Error", e.getMessage(), "OK", false);
                         }
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(activity);

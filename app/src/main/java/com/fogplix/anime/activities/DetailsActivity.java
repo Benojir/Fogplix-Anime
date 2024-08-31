@@ -108,7 +108,7 @@ public class DetailsActivity extends AppCompatActivity {
                             builder.setTitle("Error");
                             builder.setMessage(e.getMessage());
                         }
-                        builder.setPositiveButton("Ok", (dialogInterface, i) -> dialogInterface.dismiss());
+                        builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
                         builder.create();
                         builder.show();
                     });
