@@ -13,25 +13,22 @@ import androidx.media3.common.util.UnstableApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fogplix.anime.R;
+import com.fogplix.anime.dialogs.EpisodeOptionsDialog;
 import com.fogplix.anime.helpers.MyDatabaseHandler;
-import com.fogplix.anime.dialogs.EpisodeDialogBuilder;
 
 import org.json.JSONArray;
 
 @UnstableApi
 public class EpisodesButtonsAdapter extends RecyclerView.Adapter<EpisodesButtonsAdapter.MyCustomViewHolder> {
 
-    Context context;
-    JSONArray allEpisodesJArray;
-    String animeId;
-    String animeTitle;
-    private final String TAG = "MADARA";
+    private final Context context;
+    private final JSONArray allEpisodesJArray;
+    private final String animeId;
 
-    public EpisodesButtonsAdapter(Context context, JSONArray allEpisodesJArray, String animeId, String animeTitle){
+    public EpisodesButtonsAdapter(Context context, JSONArray allEpisodesJArray, String animeId) {
         this.context = context;
         this.allEpisodesJArray = allEpisodesJArray;
         this.animeId = animeId;
-        this.animeTitle = animeTitle;
     }
 
     @NonNull
@@ -52,23 +49,19 @@ public class EpisodesButtonsAdapter extends RecyclerView.Adapter<EpisodesButtons
 
             holder.episodeButton.setText(episodeNum);
 
-            holder.episodeButton.setOnClickListener(view -> {
-                EpisodeDialogBuilder episodeDialogBuilder = new EpisodeDialogBuilder((Activity) context);
-                episodeDialogBuilder.choosePlayServer(episodeId, animeTitle, animeId);
-            });
+            holder.episodeButton.setOnClickListener(view -> new EpisodeOptionsDialog((Activity) context, episodeId));
 
             MyDatabaseHandler databaseHandler = new MyDatabaseHandler(context);
 
-            if (episodeId.equals(databaseHandler.getLastWatchedEpisodeId(animeId))){
+            if (episodeId.equals(databaseHandler.getLastWatchedEpisodeId(animeId))) {
                 holder.episodeButton.setTextColor(context.getColor(R.color.white));
                 holder.episodeButton.setBackgroundColor(context.getColor(R.color.teal_500));
-            } else{
+            } else {
                 holder.episodeButton.setTextColor(context.getColor(R.color.teal_500));
                 holder.episodeButton.setBackgroundColor(context.getColor(R.color.black));
             }
-        }
-        catch (Exception e) {
-            Log.e(TAG, "onBindViewHolder: ", e);
+        } catch (Exception e) {
+            Log.e("MADARA", "onBindViewHolder: ", e);
         }
     }
 
@@ -77,7 +70,7 @@ public class EpisodesButtonsAdapter extends RecyclerView.Adapter<EpisodesButtons
         return allEpisodesJArray.length();
     }
 
-    public static class MyCustomViewHolder extends RecyclerView.ViewHolder{
+    public static class MyCustomViewHolder extends RecyclerView.ViewHolder {
 
         Button episodeButton;
 

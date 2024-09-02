@@ -91,7 +91,7 @@ public class DetailsActivity extends AppCompatActivity {
 
                     JSONArray episodesListArray = animeDetails.getJSONArray("episodesList");
 
-                    episodesButtonsAdapter = new EpisodesButtonsAdapter(DetailsActivity.this, episodesListArray, animeId, animeTitle);
+                    episodesButtonsAdapter = new EpisodesButtonsAdapter(DetailsActivity.this, episodesListArray, animeId);
                     binding.episodesBtnRecyclerView.setAdapter(episodesButtonsAdapter);
 
                     GridLayoutManager layoutManager = new GridLayoutManager(DetailsActivity.this, 3);
