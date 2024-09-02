@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -57,6 +58,28 @@ public class GenerateDirectLink {
                 Document document = Jsoup.connect(episodeLink)
                         .userAgent(activity.getString(R.string.user_agent))
                         .get();
+
+                Element previousEpisodeLinkContainer = document.select(".anime_video_body_episodes_l").first();
+                Element nextEpisodeLinkContainer = document.select(".anime_video_body_episodes_r").first();
+
+                String previousEpisodeId = "";
+                String nextEpisodeId = "";
+
+                if (previousEpisodeLinkContainer != null) {
+                    Element previousEpisodeLinkA = previousEpisodeLinkContainer.selectFirst("a");
+                    if (previousEpisodeLinkA != null) {
+                        previousEpisodeId = previousEpisodeLinkA.attr("href");
+                        previousEpisodeId = previousEpisodeId.replace("/", "");
+                    }
+                }
+
+                if (nextEpisodeLinkContainer != null) {
+                    Element nextEpisodeLinkA = nextEpisodeLinkContainer.selectFirst("a");
+                    if (nextEpisodeLinkA != null) {
+                        nextEpisodeId = nextEpisodeLinkA.attr("href");
+                        nextEpisodeId = nextEpisodeId.replace("/", "");
+                    }
+                }
 
                 String embedLink = Objects.requireNonNull(document.select("iframe").first()).attr("src").trim();
 
@@ -109,6 +132,8 @@ public class GenerateDirectLink {
                 episodeFinalInfo.put("referer", embedLink);
                 episodeFinalInfo.put("videoHLSUrl", videoHLSUrl);
                 episodeFinalInfo.put("videoHLSUrl2", videoHLSUrl2);
+                episodeFinalInfo.put("previousEpisodeId", previousEpisodeId);
+                episodeFinalInfo.put("nextEpisodeId", nextEpisodeId);
 
                 new Handler(Looper.getMainLooper()).post(() -> onGenerateDirectLink.onComplete(episodeFinalInfo));
 

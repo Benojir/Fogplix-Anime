@@ -181,25 +181,37 @@
         android:clipToPadding="false"
         android:gravity="center"
         android:padding="24dp"
+        android:orientation="horizontal"
         tools:ignore="ContentDescription">
 
+        <ImageButton
+            android:id="@+id/previous_episode"
+            style="@style/ExoStyledControls.Button.Center.PlayPause"
+            android:layout_marginHorizontal="25dp"
+            android:src="@drawable/skip_previous_24" />
 
         <ImageButton
             android:id="@+id/backward_10"
             style="@style/ExoStyledControls.Button.Center.PlayPause"
-            android:layout_marginHorizontal="50dp"
+            android:layout_marginHorizontal="0dp"
             android:src="@drawable/replay_10_24" />
 
         <ImageButton
             android:id="@id/exo_play_pause"
             style="@style/ExoStyledControls.Button.Center.PlayPause"
-            android:layout_marginHorizontal="50dp" />
+            android:layout_marginHorizontal="30dp" />
 
         <ImageButton
             android:id="@+id/forward_10"
             style="@style/ExoStyledControls.Button.Center.PlayPause"
-            android:layout_marginHorizontal="50dp"
+            android:layout_marginHorizontal="0dp"
             android:src="@drawable/forward_10_24" />
+
+        <ImageButton
+            android:id="@+id/next_episode"
+            style="@style/ExoStyledControls.Button.Center.PlayPause"
+            android:layout_marginHorizontal="25dp"
+            android:src="@drawable/skip_next_24" />
 
     </LinearLayout>
 
