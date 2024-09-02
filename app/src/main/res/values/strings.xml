@@ -10,7 +10,6 @@
     <string name="popular">Popular</string>
     <string name="synopsis">Synopsis</string>
 
-    <string name="VIDCDN_API_URL">https://api.fogplix-anime.com/generate-link.php?id=</string>
     <string name="proxy_browser_link">https://proxy.fogplix-anime.com/browse.php?link=</string>
 
     <string name="user_agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36</string>
