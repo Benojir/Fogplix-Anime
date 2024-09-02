@@ -59,17 +59,29 @@ public class GenerateDirectLink {
                         .userAgent(activity.getString(R.string.user_agent))
                         .get();
 
+                Element animeIdContainer = document.select(".anime-info").first();
                 Element previousEpisodeLinkContainer = document.select(".anime_video_body_episodes_l").first();
                 Element nextEpisodeLinkContainer = document.select(".anime_video_body_episodes_r").first();
 
+                String animeId = "Unknown";
+                String animeTitle = "";
                 String previousEpisodeId = "";
                 String nextEpisodeId = "";
+
+                if (animeIdContainer != null) {
+                    Element animeIdA = animeIdContainer.selectFirst("a");
+                    if (animeIdA != null) {
+                        animeId = animeIdA.attr("href");
+                        animeId = animeId.replace("/category/", "").trim();
+                        animeTitle = animeIdA.text().trim();
+                    }
+                }
 
                 if (previousEpisodeLinkContainer != null) {
                     Element previousEpisodeLinkA = previousEpisodeLinkContainer.selectFirst("a");
                     if (previousEpisodeLinkA != null) {
                         previousEpisodeId = previousEpisodeLinkA.attr("href");
-                        previousEpisodeId = previousEpisodeId.replace("/", "");
+                        previousEpisodeId = previousEpisodeId.replace("/", "").trim();
                     }
                 }
 
@@ -77,7 +89,7 @@ public class GenerateDirectLink {
                     Element nextEpisodeLinkA = nextEpisodeLinkContainer.selectFirst("a");
                     if (nextEpisodeLinkA != null) {
                         nextEpisodeId = nextEpisodeLinkA.attr("href");
-                        nextEpisodeId = nextEpisodeId.replace("/", "");
+                        nextEpisodeId = nextEpisodeId.replace("/", "").trim();
                     }
                 }
 
@@ -129,6 +141,9 @@ public class GenerateDirectLink {
                 String videoHLSUrl2 = source2.getJSONObject(0).getString("file");
 
                 JSONObject episodeFinalInfo = new JSONObject();
+                episodeFinalInfo.put("animeId", animeId);
+                episodeFinalInfo.put("animeTitle", animeTitle);
+                episodeFinalInfo.put("episodeId", episodeId);
                 episodeFinalInfo.put("referer", embedLink);
                 episodeFinalInfo.put("videoHLSUrl", videoHLSUrl);
                 episodeFinalInfo.put("videoHLSUrl2", videoHLSUrl2);

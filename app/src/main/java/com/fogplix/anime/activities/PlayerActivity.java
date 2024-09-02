@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,9 +63,13 @@ import com.fogplix.anime.BuildConfig;
 import com.fogplix.anime.R;
 import com.fogplix.anime.helpers.CustomMethods;
 import com.fogplix.anime.helpers.DoubleClickListener;
+import com.fogplix.anime.helpers.GenerateDirectLink;
 import com.fogplix.anime.helpers.MyDatabaseHandler;
 import com.fogplix.anime.model.LastEpisodeWatchedModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -76,6 +81,9 @@ import java.util.UUID;
 public class PlayerActivity extends AppCompatActivity {
 
     private static final String TAG = "MADARA";
+    private LinearLayout apiLoadersContainer;
+    private TextView episodeLoadingTV;
+    private RelativeLayout playerComponentsContainer;
     private ProgressBar bufferingProgressBar;
     private PlayerView exoPlayerView;
     private String refererUrl = "";
@@ -90,10 +98,12 @@ public class PlayerActivity extends AppCompatActivity {
     private AudioManager audioManager;
     private final int SHOW_MAX_BRIGHTNESS = 100;
     private final int SHOW_MAX_VOLUME = 50;
-    private ImageButton qualityBtn, backButton, fitScreenBtn, backward10, forward10;
+    private ImageButton qualityBtn, backButton, fitScreenBtn, backward10, forward10, previousEpisode, nextEpisode;
     private TextView videoNameTV, episodeNumTV;
     private String episodeId;
     private String animeTitle;
+    private String nextEpisodeId = "";
+    private String previousEpisodeId = "";
     private DefaultTrackSelector defaultTrackSelector;
     private ArrayList<String> videoQualities;
     private int selectedQualityIndex = 0;
@@ -110,7 +120,7 @@ public class PlayerActivity extends AppCompatActivity {
         DEFAULT_COOKIE_MANAGER.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,28 +142,98 @@ public class PlayerActivity extends AppCompatActivity {
         hideSystemUI();
         initVars();
 
+        MyDatabaseHandler dbHandler = new MyDatabaseHandler(this);
+
         ////////////////////////////////////////////////////////////////////////////////////////////
 
         episodeId = getIntent().getStringExtra("episodeId");
-        animeTitle = getIntent().getStringExtra("animeTitle");
-        String animeId = getIntent().getStringExtra("animeId");
-        refererUrl = getIntent().getStringExtra("refererUrl");
-        String videoHLSUrl = getIntent().getStringExtra("videoHLSUrl");
-        String videoHLSUrl2 = getIntent().getStringExtra("videoHLSUrl2");
 
-        Uri videoUri = Uri.parse(videoHLSUrl);
-        videoUri2 = Uri.parse(videoHLSUrl2);
+        if (episodeId == null) {
+            CustomMethods.errorAlert(this, "Error", "Episode ID is null.", "OK", true);
+            return;
+        }
 
-        initializePlayer(videoUri, false);
+        episodeLoadingTV.setText("Loading episode " + CustomMethods.extractEpisodeNumberFromId(episodeId));
 
-        //---------------------------Below code for each anime last episode-------------------------
+//        animeTitle = getIntent().getStringExtra("animeTitle");
+//        String animeId = getIntent().getStringExtra("animeId");
+//        refererUrl = getIntent().getStringExtra("refererUrl");
+//        String videoHLSUrl = getIntent().getStringExtra("videoHLSUrl");
+//        String videoHLSUrl2 = getIntent().getStringExtra("videoHLSUrl2");
 
-        LastEpisodeWatchedModel lastEpisodeWatchedModel = new LastEpisodeWatchedModel(animeId, episodeId);
+        GenerateDirectLink generateDirectLink = new GenerateDirectLink(this);
 
-        MyDatabaseHandler dbHandler = new MyDatabaseHandler(this);
-        dbHandler.addLastWatchedEpisode(lastEpisodeWatchedModel);
+        generateDirectLink.generate(episodeId, new GenerateDirectLink.OnGenerateDirectLink() {
+            @Override
+            public void onComplete(JSONObject object) {
+                try {
+                    apiLoadersContainer.setVisibility(View.GONE);
+                    playerComponentsContainer.setVisibility(View.VISIBLE);
 
-        //------------------------------------------------------------------------------------------
+                    animeTitle = object.getString("animeTitle");
+                    refererUrl = object.getString("referer");
+                    String animeId = object.getString("animeId");
+                    String videoHLSUrl = object.getString("videoHLSUrl");
+                    String videoHLSUrl2 = object.getString("videoHLSUrl2");
+                    previousEpisodeId = object.getString("previousEpisodeId");
+                    nextEpisodeId = object.getString("nextEpisodeId");
+
+                    //-----------Below code for showing/hiding previous and next episode------------
+
+                    if (previousEpisodeId.equals("")) {
+                        previousEpisode.setVisibility(View.INVISIBLE);
+                    } else {
+                        previousEpisode.setVisibility(View.VISIBLE);
+                    }
+
+                    if (nextEpisodeId.equals("")) {
+                        nextEpisode.setVisibility(View.INVISIBLE);
+                    } else {
+                        nextEpisode.setVisibility(View.VISIBLE);
+                    }
+
+                    //------------------------------------------------------------------------------
+
+                    Uri videoUri = Uri.parse(videoHLSUrl);
+                    videoUri2 = Uri.parse(videoHLSUrl2);
+
+                    initializePlayer(videoUri, false);
+
+                    //--------------------Below code for each anime last episode--------------------
+                    LastEpisodeWatchedModel lastEpisodeWatchedModel = new LastEpisodeWatchedModel(animeId, episodeId);
+                    dbHandler.addLastWatchedEpisode(lastEpisodeWatchedModel);
+
+                } catch (JSONException e) {
+                    CustomMethods.errorAlert(PlayerActivity.this, "Error", e.getMessage(), "OK", true);
+                }
+            }
+
+            @Override
+            public void onFailed(String error) {
+                CustomMethods.errorAlert(PlayerActivity.this, "Error", error, "OK", true);
+            }
+        });
+
+
+        //+++++++++++++++++++++++ Below section is handing button actions ++++++++++++++++++++++++++
+
+        previousEpisode.setOnClickListener(v -> {
+            if (!previousEpisodeId.equals("")) {
+                Intent intent = new Intent(PlayerActivity.this, PlayerActivity.class);
+                intent.putExtra("episodeId", previousEpisodeId);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        nextEpisode.setOnClickListener(v -> {
+            if (!nextEpisodeId.equals("")) {
+                Intent intent = new Intent(PlayerActivity.this, PlayerActivity.class);
+                intent.putExtra("episodeId", nextEpisodeId);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         backward10.setOnClickListener(view -> exoPlayer.seekTo(exoPlayer.getCurrentPosition() - 10000));
         forward10.setOnClickListener(view -> exoPlayer.seekTo(exoPlayer.getCurrentPosition() + 10000));
@@ -753,6 +833,9 @@ public class PlayerActivity extends AppCompatActivity {
     private void initVars() {
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
+        apiLoadersContainer = findViewById(R.id.apiLoadersContainer);
+        episodeLoadingTV = findViewById(R.id.episodeLoadingTV);
+        playerComponentsContainer = findViewById(R.id.playerComponentsContainer);
         bufferingProgressBar = findViewById(R.id.bufferingProgressBar);
         exoPlayerView = findViewById(R.id.exoPlayerView);
         brightnessVolumeContainer = findViewById(R.id.brightness_volume_container);
@@ -768,6 +851,8 @@ public class PlayerActivity extends AppCompatActivity {
         doubleTapSkipForwardIcon = findViewById(R.id.doubleTapSkipForwardIcon);
         backward10 = findViewById(R.id.backward_10);
         forward10 = findViewById(R.id.forward_10);
+        previousEpisode = findViewById(R.id.previous_episode);
+        nextEpisode = findViewById(R.id.next_episode);
 
         doubleTapSkipBackIcon.setVisibility(View.GONE);
         doubleTapSkipForwardIcon.setVisibility(View.GONE);
