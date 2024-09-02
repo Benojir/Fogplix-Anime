@@ -45,4 +45,8 @@
     <string name="attachment_summary_on">Now you are able to browse Fogplix Anime through proxy</string>
     <string name="attachment_summary_off">Use proxy to bypass your ISP (Internet Service Provider) blockage</string>
 
+    <string name="asking_donation">Dear Anime Fans,\n\nWe hope you’re enjoying Fogplix Anime! To keep this free service running, we rely on a VPS server that costs us $5 each month. Since we don’t earn from this, we humbly ask for your support.\n\nAny small donation would be greatly appreciated and would help us continue offering this service. Thank you so much for being part of our community and for considering a contribution.\n\nWith sincere gratitude,\nThe Fogplix Anime Team</string>
+    <string name="donation_subject">Support Fogplix Anime - Your Free Anime Streaming Service!</string>
+    <string name="bmc_donation_link">https://buymeacoffee.com/mrsparvinry</string>
+
 </resources>

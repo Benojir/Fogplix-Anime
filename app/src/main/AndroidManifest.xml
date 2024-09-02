@@ -44,7 +44,9 @@
         android:theme="@style/Base.Theme.Fogplix"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
+        <activity
+            android:name=".activities.DonateActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.SettingsActivity"
             android:exported="false"

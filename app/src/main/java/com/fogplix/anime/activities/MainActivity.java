@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
 
         CustomMethods.checkForUpdateOnStartApp(this);
         CustomMethods.checkNewNotice(this, importantNoticeTV);
-        CustomMethods.checkPlayableServersStatus(this);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -178,6 +177,8 @@ public class MainActivity extends AppCompatActivity {
                         drawerLayout.closeDrawer(GravityCompat.START);
                     }
                 }, 500);
+            } else if (item.getItemId() == R.id.donate_action) {
+                startActivity(new Intent(MainActivity.this, DonateActivity.class));
             } else if (item.getItemId() == R.id.report_bug_action) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.official_telegram_group))));
             } else if (item.getItemId() == R.id.share_action) {

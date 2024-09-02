@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
+    tools:context=".activities.DonateActivity"
+    tools:ignore="HardcodedText">
+
+    <include
+        android:id="@+id/ownToolbar"
+        layout="@layout/own_toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ownToolbar"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="15dp">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/donation_subject"
+                    android:textColor="@color/fade_white"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp"
+                    app:dividerColor="@color/grey" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/asking_donation"
+                    android:textColor="@color/fade_white"
+                    android:textSize="16sp"
+                    tools:ignore="VisualLintLongText" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp"
+                    app:dividerColor="@color/grey" />
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:text="Donate via:"
+                    android:textColor="@color/fade_white"
+                    tools:ignore="TextSizeCheck" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="For global users:"
+                        android:layout_marginEnd="25dp"
+                        android:textColor="@color/fade_white" />
+
+                    <ImageView
+                        android:id="@+id/sendViaBMAC"
+                        android:layout_width="150dp"
+                        android:layout_height="60dp"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="Buy Me A Coffee"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/round_transparent_ripple_button"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:src="@drawable/buy_me_coffee"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="For Indian users:"
+                        android:layout_marginEnd="25dp"
+                        android:textColor="@color/fade_white" />
+
+                    <ImageView
+                        android:id="@+id/sendViaUPI"
+                        android:layout_width="150dp"
+                        android:layout_height="60dp"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="Send via UPI"
+                        android:src="@drawable/upi_send_button"
+                        android:background="@drawable/round_transparent_ripple_button"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:scaleType="fitCenter" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </RelativeLayout>
+
+</RelativeLayout>

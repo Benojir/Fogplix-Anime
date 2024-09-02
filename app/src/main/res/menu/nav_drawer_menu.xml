@@ -28,6 +28,11 @@
         tools:ignore="HardcodedText">
         <menu>
             <item
+                android:id="@+id/donate_action"
+                android:icon="@drawable/donate_icon"
+                android:title="Help Us" />
+
+            <item
                 android:id="@+id/share_action"
                 android:icon="@drawable/share_24"
                 android:title="Share" />
