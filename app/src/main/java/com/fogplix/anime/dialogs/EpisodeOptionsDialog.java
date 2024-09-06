@@ -25,7 +25,7 @@ import java.util.Objects;
 @OptIn(markerClass = UnstableApi.class)
 public class EpisodeOptionsDialog {
 
-    public EpisodeOptionsDialog(Activity activity, String episodeId) {
+    public EpisodeOptionsDialog(Activity activity, String episodeId, String malID) {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
@@ -45,12 +45,12 @@ public class EpisodeOptionsDialog {
         playBtn.setOnClickListener(v -> {
             Intent intent = new Intent(activity, PlayerActivity.class);
             intent.putExtra("episodeId", episodeId);
+            intent.putExtra("malID", malID);
             activity.startActivity(intent);
             dialog.dismiss();
         });
 
         downloadBtn.setOnClickListener(v -> {
-
             MyProgressDialog mpd = new MyProgressDialog(activity);
             mpd.setMessage("Generating download links...");
             mpd.setCancelable(false);

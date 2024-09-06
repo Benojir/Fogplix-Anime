@@ -8,6 +8,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -64,6 +65,7 @@ import com.fogplix.anime.R;
 import com.fogplix.anime.helpers.CustomMethods;
 import com.fogplix.anime.helpers.DoubleClickListener;
 import com.fogplix.anime.helpers.GenerateDirectLink;
+import com.fogplix.anime.helpers.GetIntroSkipTime;
 import com.fogplix.anime.helpers.MyDatabaseHandler;
 import com.fogplix.anime.model.LastEpisodeWatchedModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -99,7 +101,9 @@ public class PlayerActivity extends AppCompatActivity {
     private final int SHOW_MAX_BRIGHTNESS = 100;
     private final int SHOW_MAX_VOLUME = 50;
     private ImageButton qualityBtn, backButton, fitScreenBtn, backward10, forward10, previousEpisode, nextEpisode;
+    private Button skipIntroOutroBtn;
     private TextView videoNameTV, episodeNumTV;
+    private String malID;
     private String episodeId;
     private String animeTitle;
     private String nextEpisodeId = "";
@@ -112,6 +116,10 @@ public class PlayerActivity extends AppCompatActivity {
     private boolean shouldShowController = true;
     private boolean playWhenReady = true;
     private long playbackPosition = C.TIME_UNSET;
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable updatePositionRunnable;
+    private long startTimeMS = 0;
+    private long endTimeMS = 0;
 
     private static final CookieManager DEFAULT_COOKIE_MANAGER;
 
@@ -146,20 +154,42 @@ public class PlayerActivity extends AppCompatActivity {
 
         ////////////////////////////////////////////////////////////////////////////////////////////
 
+        handler = new Handler();
+
         episodeId = getIntent().getStringExtra("episodeId");
+        malID = getIntent().getStringExtra("malID");
 
         if (episodeId == null) {
             CustomMethods.errorAlert(this, "Error", "Episode ID is null.", "OK", true);
             return;
         }
 
-        episodeLoadingTV.setText("Loading episode " + CustomMethods.extractEpisodeNumberFromId(episodeId));
+        //------------------------------------------------------------------------------------------
 
-//        animeTitle = getIntent().getStringExtra("animeTitle");
-//        String animeId = getIntent().getStringExtra("animeId");
-//        refererUrl = getIntent().getStringExtra("refererUrl");
-//        String videoHLSUrl = getIntent().getStringExtra("videoHLSUrl");
-//        String videoHLSUrl2 = getIntent().getStringExtra("videoHLSUrl2");
+        if (malID != null && !malID.equals("")) {
+
+            GetIntroSkipTime.onGetIntroSkipTime(malID, (success, interval) -> {
+
+                Log.d(TAG, "onCreate: success = " + success);
+
+                if (success) {
+                    try {
+                        double startTime = interval.getDouble("start_time");
+                        double endTime = interval.getDouble("end_time");
+
+                        startTimeMS = (long) (startTime * 1000);
+                        endTimeMS = (long) (endTime * 1000);
+
+                    } catch (Exception e) {
+                        Log.e(TAG, "onCreate: ", e);
+                    }
+                }
+            });
+        }
+
+        //------------------------------------------------------------------------------------------
+
+        episodeLoadingTV.setText("Loading episode " + CustomMethods.extractEpisodeNumberFromId(episodeId));
 
         GenerateDirectLink generateDirectLink = new GenerateDirectLink(this);
 
@@ -217,10 +247,18 @@ public class PlayerActivity extends AppCompatActivity {
 
         //+++++++++++++++++++++++ Below section is handing button actions ++++++++++++++++++++++++++
 
+        skipIntroOutroBtn.setOnClickListener(v -> {
+            if (endTimeMS != 0 && exoPlayer != null) {
+                exoPlayer.seekTo(endTimeMS);
+                skipIntroOutroBtn.setVisibility(View.GONE);
+            }
+        });
+
         previousEpisode.setOnClickListener(v -> {
             if (!previousEpisodeId.equals("")) {
                 Intent intent = new Intent(PlayerActivity.this, PlayerActivity.class);
                 intent.putExtra("episodeId", previousEpisodeId);
+                intent.putExtra("malID", malID);
                 startActivity(intent);
                 finish();
             }
@@ -230,6 +268,7 @@ public class PlayerActivity extends AppCompatActivity {
             if (!nextEpisodeId.equals("")) {
                 Intent intent = new Intent(PlayerActivity.this, PlayerActivity.class);
                 intent.putExtra("episodeId", nextEpisodeId);
+                intent.putExtra("malID", malID);
                 startActivity(intent);
                 finish();
             }
@@ -465,6 +504,7 @@ public class PlayerActivity extends AppCompatActivity {
                 if (playbackState == Player.STATE_BUFFERING) {
                     bufferingProgressBar.setVisibility(View.VISIBLE);
                 }
+
                 if (playbackState == Player.STATE_READY) {
 
                     exoPlayerView.setVisibility(View.VISIBLE);
@@ -476,6 +516,17 @@ public class PlayerActivity extends AppCompatActivity {
                     episodeNumTV.setText("Episode " + CustomMethods.extractEpisodeNumberFromId(episodeId));
 
                     videoQualities = getVideoQualitiesTracks();
+                }
+            }
+
+            @Override
+            public void onIsPlayingChanged(boolean isPlaying) {
+                if (isPlaying) {
+                    // Start updating the position every second
+                    startUpdatingPosition();
+                } else {
+                    // Stop updating when paused or stopped
+                    stopUpdatingPosition();
                 }
             }
 
@@ -814,10 +865,10 @@ public class PlayerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
         exoPlayer.stop();
         exoPlayer.release();
+        super.onBackPressed();
+        finish();
     }
 
     @Override
@@ -844,6 +895,7 @@ public class PlayerActivity extends AppCompatActivity {
         brightVolumeTV = findViewById(R.id.brightness_volume_tv);
         qualityBtn = exoPlayerView.findViewById(R.id.quality_selection_btn);
         fitScreenBtn = exoPlayerView.findViewById(R.id.fit_screen_btn);
+        skipIntroOutroBtn = exoPlayerView.findViewById(R.id.skipIntroOutroBtn);
         videoNameTV = exoPlayerView.findViewById(R.id.animeNameTV);
         episodeNumTV = exoPlayerView.findViewById(R.id.episodeNumTV);
         backButton = exoPlayerView.findViewById(R.id.backButton);
@@ -857,5 +909,42 @@ public class PlayerActivity extends AppCompatActivity {
         doubleTapSkipBackIcon.setVisibility(View.GONE);
         doubleTapSkipForwardIcon.setVisibility(View.GONE);
     }
-    //--------------------------------------------------------------------------------------------------
+
+    //----------------------------------------------------------------------------------------------
+
+    private void startUpdatingPosition() {
+        updatePositionRunnable = new Runnable() {
+            @Override
+            public void run() {
+
+                if (exoPlayer != null) {
+
+                    long currentPositionMS = exoPlayer.getCurrentPosition(); // Get current position in milliseconds
+
+                    if (currentPositionMS >= startTimeMS && currentPositionMS < endTimeMS) {
+
+                        skipIntroOutroBtn.setVisibility(View.VISIBLE);
+                        Log.d(TAG, "run: button visible currentPositionMS = " + currentPositionMS + " and endTimeMS = " + endTimeMS);
+
+                    } else {
+                        if (skipIntroOutroBtn.getVisibility() == View.VISIBLE) {
+                            skipIntroOutroBtn.setVisibility(View.GONE);
+                        }
+                    }
+
+                    // Repeat the task every second
+                    handler.postDelayed(this, 1000);
+                }
+            }
+        };
+        handler.post(updatePositionRunnable); // Start the runnable immediately
+    }
+
+    private void stopUpdatingPosition() {
+        if (updatePositionRunnable != null) {
+            handler.removeCallbacks(updatePositionRunnable); // Stop updating position
+        }
+    }
+
+    //----------------------------------------------------------------------------------------------
 }

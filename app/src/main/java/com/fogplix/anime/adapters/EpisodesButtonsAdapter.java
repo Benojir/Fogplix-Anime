@@ -1,7 +1,6 @@
 package com.fogplix.anime.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,20 +20,22 @@ import org.json.JSONArray;
 @UnstableApi
 public class EpisodesButtonsAdapter extends RecyclerView.Adapter<EpisodesButtonsAdapter.MyCustomViewHolder> {
 
-    private final Context context;
+    private final Activity activity;
     private final JSONArray allEpisodesJArray;
     private final String animeId;
+    private final String malID;
 
-    public EpisodesButtonsAdapter(Context context, JSONArray allEpisodesJArray, String animeId) {
-        this.context = context;
+    public EpisodesButtonsAdapter(Activity activity, JSONArray allEpisodesJArray, String animeId, String malID) {
+        this.activity = activity;
         this.allEpisodesJArray = allEpisodesJArray;
         this.animeId = animeId;
+        this.malID = malID;
     }
 
     @NonNull
     @Override
     public MyCustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        LayoutInflater layoutInflater = LayoutInflater.from(activity);
         View view = layoutInflater.inflate(R.layout.sample_episode_button_design, parent, false);
         return new EpisodesButtonsAdapter.MyCustomViewHolder(view);
     }
@@ -49,16 +50,16 @@ public class EpisodesButtonsAdapter extends RecyclerView.Adapter<EpisodesButtons
 
             holder.episodeButton.setText(episodeNum);
 
-            holder.episodeButton.setOnClickListener(view -> new EpisodeOptionsDialog((Activity) context, episodeId));
+            holder.episodeButton.setOnClickListener(view -> new EpisodeOptionsDialog(activity, episodeId, malID));
 
-            MyDatabaseHandler databaseHandler = new MyDatabaseHandler(context);
+            MyDatabaseHandler databaseHandler = new MyDatabaseHandler(activity);
 
             if (episodeId.equals(databaseHandler.getLastWatchedEpisodeId(animeId))) {
-                holder.episodeButton.setTextColor(context.getColor(R.color.white));
-                holder.episodeButton.setBackgroundColor(context.getColor(R.color.teal_500));
+                holder.episodeButton.setTextColor(activity.getColor(R.color.white));
+                holder.episodeButton.setBackgroundColor(activity.getColor(R.color.teal_500));
             } else {
-                holder.episodeButton.setTextColor(context.getColor(R.color.teal_500));
-                holder.episodeButton.setBackgroundColor(context.getColor(R.color.black));
+                holder.episodeButton.setTextColor(activity.getColor(R.color.teal_500));
+                holder.episodeButton.setBackgroundColor(activity.getColor(R.color.black));
             }
         } catch (Exception e) {
             Log.e("MADARA", "onBindViewHolder: ", e);

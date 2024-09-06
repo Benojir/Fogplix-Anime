@@ -20,6 +20,7 @@ import com.fogplix.anime.adapters.EpisodesButtonsAdapter;
 import com.fogplix.anime.callbacks.DetailsScraperCallback;
 import com.fogplix.anime.databinding.ActivityDetailsBinding;
 import com.fogplix.anime.helpers.CustomMethods;
+import com.fogplix.anime.helpers.GetMALId;
 import com.fogplix.anime.helpers.Scraper;
 
 import org.json.JSONArray;
@@ -88,14 +89,20 @@ public class DetailsActivity extends AppCompatActivity {
                     }
                     binding.genresTV.setText(genres.substring(1).trim());
 
+                    //------------------------------------------------------------------------------
 
                     JSONArray episodesListArray = animeDetails.getJSONArray("episodesList");
 
-                    episodesButtonsAdapter = new EpisodesButtonsAdapter(DetailsActivity.this, episodesListArray, animeId);
-                    binding.episodesBtnRecyclerView.setAdapter(episodesButtonsAdapter);
+                    GetMALId.getId(animeTitle, malID -> {
+                        Log.d(TAG, "malID: " + malID);
+                        episodesButtonsAdapter = new EpisodesButtonsAdapter(DetailsActivity.this, episodesListArray, animeId, malID);
+                        binding.episodesBtnRecyclerView.setAdapter(episodesButtonsAdapter);
 
-                    GridLayoutManager layoutManager = new GridLayoutManager(DetailsActivity.this, 3);
-                    binding.episodesBtnRecyclerView.setLayoutManager(layoutManager);
+                        GridLayoutManager layoutManager = new GridLayoutManager(DetailsActivity.this, 3);
+                        binding.episodesBtnRecyclerView.setLayoutManager(layoutManager);
+                    });
+
+                    //------------------------------------------------------------------------------
 
                     binding.showDescriptionBtn.setOnClickListener(view -> {
 
