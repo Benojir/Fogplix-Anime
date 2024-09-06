@@ -156,36 +156,6 @@ public class CustomMethods {
         }
     }
 
-    //--------------------------------------------------------------------------------------------------
-    public static void checkPlayableServersStatus(Context context) {
-
-        new Thread(() -> {
-
-            try {
-                String playableServers =
-                        Jsoup
-                                .connect(context.getString(R.string.playable_servers_status_json_link))
-                                .timeout(30000)
-                                .ignoreContentType(true)
-                                .execute().body();
-
-                if (!playableServers.equalsIgnoreCase("")) {
-
-                    JSONObject object = new JSONObject(playableServers);
-
-                    boolean server_1 = object.getBoolean("server-1");
-                    boolean server_2 = object.getBoolean("server-2");
-                    boolean server_3 = object.getBoolean("server-3");
-
-                    HPSharedPreference hpSharedPreference = new HPSharedPreference(context);
-                    hpSharedPreference.savePlayableServersStatus(server_1, server_2, server_3);
-                }
-            } catch (Exception e) {
-                Log.e(TAG, "checkPlayableServersStatus: ", e);
-            }
-        }).start();
-    }
-
 //--------------------------------------------------------------------------------------------------
 
     public static void checkNewNotice(Context context, TextView textView) {
@@ -359,7 +329,10 @@ public class CustomMethods {
                                 builder.setPositiveButton("Update", (dialogInterface, i) -> {
                                     dialogInterface.dismiss();
 
-                                    String downloadPath = Objects.requireNonNull(activity.getExternalFilesDir(null)) + "/fogplix_v" + versionName + "_t" + getDateTime() + ".apk";
+                                    // Delete previous APK files
+                                    deleteOldApkFiles(activity);
+
+                                    String downloadPath = Objects.requireNonNull(activity.getExternalFilesDir(null)) + "/Fogplix-Anime_v" + versionName + "_t" + getDateTime() + ".apk";
 
                                     MyProgressDialog pd = new MyProgressDialog(activity);
                                     pd.setCancelable(false);
@@ -418,6 +391,30 @@ public class CustomMethods {
             }
         }).start();
     }
+
+    public static void deleteOldApkFiles(Activity activity) {
+        // Get the folder where APK files are stored
+        File apkDir = activity.getExternalFilesDir(null);
+
+        if (apkDir != null && apkDir.isDirectory()) {
+            // List all files in the directory
+            File[] files = apkDir.listFiles();
+
+            if (files != null) {
+                for (File file : files) {
+                    // Check if the file is an APK and delete it
+                    if (file.getName().endsWith(".apk")) {
+                        if (file.delete()) {
+                            Log.d(TAG, "Deleted old APK: " + file.getName());
+                        } else {
+                            Log.e(TAG, "Failed to delete old APK: " + file.getName());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     private static void installApk(Activity activity, String filePath) {
 
