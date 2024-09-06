@@ -495,5 +495,4 @@ public class CustomMethods {
         }
         return query.substring(startIndex, endIndex);
     }
-
 }
