@@ -94,7 +94,11 @@ public class DetailsActivity extends AppCompatActivity {
                     JSONArray episodesListArray = animeDetails.getJSONArray("episodesList");
 
                     GetMALId.getId(animeTitle, malID -> {
+
+                        binding.loadingEpisodesContainer.setVisibility(View.GONE);
+                        binding.episodesBtnRecyclerView.setVisibility(View.VISIBLE);
                         Log.d(TAG, "malID: " + malID);
+
                         episodesButtonsAdapter = new EpisodesButtonsAdapter(DetailsActivity.this, episodesListArray, animeId, malID);
                         binding.episodesBtnRecyclerView.setAdapter(episodesButtonsAdapter);
 
