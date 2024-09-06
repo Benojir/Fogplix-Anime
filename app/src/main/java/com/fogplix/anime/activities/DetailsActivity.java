@@ -139,7 +139,10 @@ public class DetailsActivity extends AppCompatActivity {
         scraper.scrapeDetails(animeId, episodeId);
 
         binding.backBtn.setOnClickListener(view -> onBackPressed());
-        binding.searchBtn.setOnClickListener(view -> startActivity(new Intent(this, SearchActivity.class)));
+        binding.searchBtn.setOnClickListener(view -> {
+            startActivity(new Intent(this, SearchActivity.class));
+            finish();
+        });
     }
 
 //    ----------------------------------------------------------------------------------------------

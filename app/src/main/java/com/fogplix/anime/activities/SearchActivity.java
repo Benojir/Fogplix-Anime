@@ -223,6 +223,7 @@ public class SearchActivity extends AppCompatActivity {
                 if (text != null) {
                     keyword = oldTxt + text.get(0);
                     binding.searchET.setText(keyword);
+                    binding.searchET.setSelection(keyword.length());
                     resetEverythingAndPerformFirstSearch(keyword);
                 }
             }
