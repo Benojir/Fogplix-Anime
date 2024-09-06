@@ -118,8 +118,8 @@ public class PlayerActivity extends AppCompatActivity {
     private long playbackPosition = C.TIME_UNSET;
     private Handler handler = new Handler(Looper.getMainLooper());
     private Runnable updatePositionRunnable;
-    private long startTimeMS = 0;
-    private long endTimeMS = 0;
+    private long introStartTimeMS = 0;
+    private long introEndTimeMS = 0;
 
     private static final CookieManager DEFAULT_COOKIE_MANAGER;
 
@@ -177,8 +177,8 @@ public class PlayerActivity extends AppCompatActivity {
                         double startTime = interval.getDouble("start_time");
                         double endTime = interval.getDouble("end_time");
 
-                        startTimeMS = (long) (startTime * 1000);
-                        endTimeMS = (long) (endTime * 1000);
+                        introStartTimeMS = (long) (startTime * 1000);
+                        introEndTimeMS = (long) (endTime * 1000);
 
                     } catch (Exception e) {
                         Log.e(TAG, "onCreate: ", e);
@@ -248,8 +248,8 @@ public class PlayerActivity extends AppCompatActivity {
         //+++++++++++++++++++++++ Below section is handing button actions ++++++++++++++++++++++++++
 
         skipIntroOutroBtn.setOnClickListener(v -> {
-            if (endTimeMS != 0 && exoPlayer != null) {
-                exoPlayer.seekTo(endTimeMS);
+            if (introEndTimeMS != 0 && exoPlayer != null) {
+                exoPlayer.seekTo(introEndTimeMS);
                 skipIntroOutroBtn.setVisibility(View.GONE);
             }
         });
@@ -921,10 +921,10 @@ public class PlayerActivity extends AppCompatActivity {
 
                     long currentPositionMS = exoPlayer.getCurrentPosition(); // Get current position in milliseconds
 
-                    if (currentPositionMS >= startTimeMS && currentPositionMS < endTimeMS) {
+                    if (currentPositionMS >= introStartTimeMS && currentPositionMS < introEndTimeMS) {
 
                         skipIntroOutroBtn.setVisibility(View.VISIBLE);
-                        Log.d(TAG, "run: button visible currentPositionMS = " + currentPositionMS + " and endTimeMS = " + endTimeMS);
+                        Log.d(TAG, "run: button visible currentPositionMS = " + currentPositionMS + " and introEndTimeMS = " + introEndTimeMS);
 
                     } else {
                         if (skipIntroOutroBtn.getVisibility() == View.VISIBLE) {
