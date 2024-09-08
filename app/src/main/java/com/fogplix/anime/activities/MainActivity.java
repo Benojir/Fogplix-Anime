@@ -192,6 +192,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.official_website))));
             } else if (item.getItemId() == R.id.visit_telegram) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.official_telegram_channel))));
+            } else if (item.getItemId() == R.id.visit_whatsapp_channel) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.official_whatsapp_channel))));
             }
             return false;
         });

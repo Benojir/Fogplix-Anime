@@ -31,12 +31,10 @@
                 android:id="@+id/donate_action"
                 android:icon="@drawable/donate_icon"
                 android:title="Help Us" />
-
             <item
                 android:id="@+id/share_action"
                 android:icon="@drawable/share_24"
                 android:title="Share" />
-
             <item
                 android:id="@+id/more_apps_action"
                 android:icon="@android:drawable/stat_notify_more"
@@ -51,11 +49,14 @@
                 android:id="@+id/visit_website"
                 android:icon="@drawable/browser_24"
                 android:title="Website" />
-
             <item
                 android:id="@+id/visit_telegram"
                 android:icon="@drawable/telegram"
                 android:title="Telegram" />
+            <item
+                android:id="@+id/visit_whatsapp_channel"
+                android:icon="@drawable/whatsapp"
+                android:title="WhatsApp" />
         </menu>
 
     </item>
