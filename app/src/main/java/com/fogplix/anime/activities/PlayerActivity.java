@@ -3,6 +3,7 @@ package com.fogplix.anime.activities;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.AudioManager;
 import android.net.Uri;
@@ -59,6 +60,7 @@ import androidx.media3.exoplayer.trackselection.ExoTrackSelection;
 import androidx.media3.exoplayer.trackselection.MappingTrackSelector;
 import androidx.media3.ui.AspectRatioFrameLayout;
 import androidx.media3.ui.PlayerView;
+import androidx.preference.PreferenceManager;
 
 import com.fogplix.anime.BuildConfig;
 import com.fogplix.anime.R;
@@ -120,6 +122,7 @@ public class PlayerActivity extends AppCompatActivity {
     private Runnable updatePositionRunnable;
     private long introStartTimeMS = 0;
     private long introEndTimeMS = 0;
+    private SharedPreferences preferences;
 
     private static final CookieManager DEFAULT_COOKIE_MANAGER;
 
@@ -150,6 +153,8 @@ public class PlayerActivity extends AppCompatActivity {
         hideSystemUI();
         initVars();
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         MyDatabaseHandler dbHandler = new MyDatabaseHandler(this);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -166,25 +171,31 @@ public class PlayerActivity extends AppCompatActivity {
 
         //------------------------------------------------------------------------------------------
 
-        if (malID != null && !malID.equals("")) {
+        if (!preferences.getBoolean("85s_skipping_button", false)) {
 
-            GetIntroSkipTime.onGetIntroSkipTime(malID, (success, interval) -> {
+            if (malID != null && !malID.equals("")) {
 
-                Log.d(TAG, "onCreate: success = " + success);
+                GetIntroSkipTime.onGetIntroSkipTime(malID, (success, interval) -> {
 
-                if (success) {
-                    try {
-                        double startTime = interval.getDouble("start_time");
-                        double endTime = interval.getDouble("end_time");
+                    Log.d(TAG, "onCreate: success = " + success);
 
-                        introStartTimeMS = (long) (startTime * 1000);
-                        introEndTimeMS = (long) (endTime * 1000);
+                    if (success) {
+                        try {
+                            double startTime = interval.getDouble("start_time");
+                            double endTime = interval.getDouble("end_time");
 
-                    } catch (Exception e) {
-                        Log.e(TAG, "onCreate: ", e);
+                            introStartTimeMS = (long) (startTime * 1000);
+                            introEndTimeMS = (long) (endTime * 1000);
+
+                        } catch (Exception e) {
+                            Log.e(TAG, "onCreate: ", e);
+                        }
                     }
-                }
-            });
+                });
+            }
+        } else {
+            skipIntroOutroBtn.setVisibility(View.VISIBLE);
+            skipIntroOutroBtn.setText("Skip 85s");
         }
 
         //------------------------------------------------------------------------------------------
@@ -248,9 +259,14 @@ public class PlayerActivity extends AppCompatActivity {
         //+++++++++++++++++++++++ Below section is handing button actions ++++++++++++++++++++++++++
 
         skipIntroOutroBtn.setOnClickListener(v -> {
-            if (introEndTimeMS != 0 && exoPlayer != null) {
-                exoPlayer.seekTo(introEndTimeMS);
-                skipIntroOutroBtn.setVisibility(View.GONE);
+            if (!preferences.getBoolean("85s_skipping_button", false)) {
+                if (introEndTimeMS != 0 && exoPlayer != null) {
+                    exoPlayer.seekTo(introEndTimeMS);
+                    skipIntroOutroBtn.setVisibility(View.GONE);
+                }
+            } else {
+                long currentVideoPosition = exoPlayer.getCurrentPosition();
+                exoPlayer.seekTo(currentVideoPosition + 85000);
             }
         });
 
@@ -278,9 +294,7 @@ public class PlayerActivity extends AppCompatActivity {
         forward10.setOnClickListener(view -> exoPlayer.seekTo(exoPlayer.getCurrentPosition() + 10000));
 
         qualityBtn.setOnClickListener(view -> {
-
             if (videoQualities != null) {
-
                 if (videoQualities.size() > 0) {
                     getQualityChooserDialog(this, videoQualities);
                 } else {
@@ -292,7 +306,6 @@ public class PlayerActivity extends AppCompatActivity {
         });
 
         fitScreenBtn.setOnClickListener(v -> {
-
             if (exoPlayerView.getResizeMode() == AspectRatioFrameLayout.RESIZE_MODE_FIT) {
                 exoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_ZOOM);
                 fitScreenBtn.setImageResource(R.drawable.crop_5_4);
@@ -310,7 +323,6 @@ public class PlayerActivity extends AppCompatActivity {
         });
 
         backButton.setOnClickListener(view -> {
-
             if (exoPlayer != null) {
                 exoPlayer.stop();
                 exoPlayer.release();
@@ -506,27 +518,43 @@ public class PlayerActivity extends AppCompatActivity {
                 }
 
                 if (playbackState == Player.STATE_READY) {
+                    if (preferences.getBoolean("85s_skipping_button", false)) {
+                        skipIntroOutroBtn.setVisibility(View.VISIBLE);
+                    }
 
                     exoPlayerView.setVisibility(View.VISIBLE);
-
                     bufferingProgressBar.setVisibility(View.GONE);
-
                     videoNameTV.setText(animeTitle.trim());
-
                     episodeNumTV.setText("Episode " + CustomMethods.extractEpisodeNumberFromId(episodeId));
-
                     videoQualities = getVideoQualitiesTracks();
+                }
+
+                if (playbackState == Player.STATE_ENDED) {
+                    skipIntroOutroBtn.setVisibility(View.GONE);
+
+                    if (preferences.getBoolean("auto_play_next_episode", false)) {
+                        if (!nextEpisodeId.equals("")) {
+                            Intent intent = new Intent(PlayerActivity.this, PlayerActivity.class);
+                            intent.putExtra("episodeId", nextEpisodeId);
+                            intent.putExtra("malID", malID);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
                 }
             }
 
             @Override
             public void onIsPlayingChanged(boolean isPlaying) {
-                if (isPlaying) {
-                    // Start updating the position every second
-                    startUpdatingPosition();
-                } else {
-                    // Stop updating when paused or stopped
-                    stopUpdatingPosition();
+
+                if (!preferences.getBoolean("85s_skipping_button", false)) {
+                    if (isPlaying) {
+                        // Start updating the position every second
+                        startUpdatingPosition();
+                    } else {
+                        // Stop updating when paused or stopped
+                        stopUpdatingPosition();
+                    }
                 }
             }
 

@@ -39,14 +39,18 @@
     <string name="episode_playing_failed_message">Failed to play this episode. Please take a screenshot and report it to us. Now try to play on the web player. Just click on the below button \n</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
-
-    <!-- Proxy Settings Preferences -->
-    <string name="attachment_title">Proxy</string>
-    <string name="attachment_summary_on">Now you are able to browse Fogplix Anime through proxy</string>
-    <string name="attachment_summary_off">Use proxy to bypass your ISP (Internet Service Provider) blockage</string>
-
     <string name="asking_donation">Dear Anime Fans,\n\nWe hope you’re enjoying Fogplix Anime! To keep this free service running, we rely on a VPS server that costs us $5 each month. Since we don’t earn from this, we humbly ask for your support.\n\nAny small donation would be greatly appreciated and would help us continue offering this service. Thank you so much for being part of our community and for considering a contribution.\n\nWith sincere gratitude,\nThe Fogplix Anime Team</string>
     <string name="donation_subject">Support Fogplix Anime - Your Free Anime Streaming Service!</string>
     <string name="bmc_donation_link">https://buymeacoffee.com/mrsparvinry</string>
+
+    <string name="proxy_setting_title">Proxy</string>
+    <string name="proxy_setting_summary_on">Now you are able to browse Fogplix Anime through proxy</string>
+    <string name="proxy_setting_summary_off">Use proxy to bypass your ISP (Internet Service Provider) blockage</string>
+    <string name="skip_85s_title">Show 85s Skip Button</string>
+    <string name="skip_85s_summary_on">85 seconds skip button is enabled</string>
+    <string name="skip_85s_summary_off">85 seconds skip button is disabled.</string>
+    <string name="auto_play_next_episode_summary_off">Next episode will not play automatically.</string>
+    <string name="auto_play_next_episode_summary_on">Next episode will be played when current episode ended.</string>
+    <string name="auto_play_next_episode_title">Auto Play Next Episode</string>
 
 </resources>
