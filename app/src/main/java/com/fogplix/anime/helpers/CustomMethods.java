@@ -165,9 +165,7 @@ public class CustomMethods {
         new Thread(() -> {
 
             try {
-                String newNoticeJSON =
-                        Jsoup
-                                .connect(context.getString(R.string.new_notice_json_link))
+                String newNoticeJSON = Jsoup.connect(context.getString(R.string.new_notice_json_link))
                                 .timeout(30000)
                                 .ignoreContentType(true)
                                 .execute().body();
@@ -290,8 +288,7 @@ public class CustomMethods {
         new Thread(() -> {
 
             try {
-                String versionInfoJSON =
-                        Jsoup.connect(activity.getString(R.string.version_page_link))
+                String versionInfoJSON = Jsoup.connect(activity.getString(R.string.version_page_link))
                                 .timeout(30000)
                                 .ignoreContentType(true)
                                 .execute().body();
@@ -392,27 +389,31 @@ public class CustomMethods {
         }).start();
     }
 
-    public static void deleteOldApkFiles(Activity activity) {
-        // Get the folder where APK files are stored
-        File apkDir = activity.getExternalFilesDir(null);
+    private static void deleteOldApkFiles(Activity activity) {
+        new Thread(() -> {
+            // Get the folder where APK files are stored
+            File apkDir = activity.getExternalFilesDir(null);
 
-        if (apkDir != null && apkDir.isDirectory()) {
-            // List all files in the directory
-            File[] files = apkDir.listFiles();
+            if (apkDir != null && apkDir.isDirectory()) {
+                // List all files in the directory
+                File[] files = apkDir.listFiles();
 
-            if (files != null) {
-                for (File file : files) {
-                    // Check if the file is an APK and delete it
-                    if (file.getName().endsWith(".apk")) {
-                        if (file.delete()) {
-                            Log.d(TAG, "Deleted old APK: " + file.getName());
-                        } else {
-                            Log.e(TAG, "Failed to delete old APK: " + file.getName());
+                if (files != null) {
+                    for (File file : files) {
+                        if (file.exists() && file.isFile()) {
+                            // Check if the file is an APK and delete it
+                            if (file.getName().endsWith(".apk")) {
+                                if (file.delete()) {
+                                    Log.d(TAG, "Deleted old APK: " + file.getName());
+                                } else {
+                                    Log.e(TAG, "Failed to delete old APK: " + file.getName());
+                                }
+                            }
                         }
                     }
                 }
             }
-        }
+        }).start();
     }
 
 
