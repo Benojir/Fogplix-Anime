@@ -65,7 +65,7 @@ public class MyDatabaseHandler extends SQLiteOpenHelper {
 
         String episodeId = "";
 
-        if (cursor != null && cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             episodeId = cursor.getString(1);
             cursor.close();
         }
@@ -150,7 +150,7 @@ public class MyDatabaseHandler extends SQLiteOpenHelper {
 
         AnimeFavoriteListModel favoriteListModel = new AnimeFavoriteListModel();
 
-        if (cursor != null && cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
 
             cursor.moveToFirst();
 
@@ -167,9 +167,7 @@ public class MyDatabaseHandler extends SQLiteOpenHelper {
 //--------------------------------------------------------------------------------------------------
 
     public boolean deleteAnimeFromFavorite(String animeId) {
-
         SQLiteDatabase db = this.getWritableDatabase();
-
         return db.delete(DatabaseParams.FAVORITE_ANIME_TABLE, DatabaseParams.KEY_ANIME_ID + "=?", new String[]{animeId}) > 0;
     }
 //--------------------------------------------------------------------------------------------------
