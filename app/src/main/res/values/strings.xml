@@ -14,7 +14,6 @@
 
     <string name="user_agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36</string>
     <string name="app_sharing_message">Watch free anime (Dubbed and Subbed) with Fogplix Anime app. Download now from </string>
-    <string name="onesignal_app_id" tools:ignore="TypographyDashes,Typos">c0feb5c5-3fe1-490a-bcf2-0af7ed45a18b</string>
     <string name="compose_shortcut_label_for_favorites">Favorites</string>
     <string name="compose_shortcut_label_for_search">Search</string>
 
